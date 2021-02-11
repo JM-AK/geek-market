@@ -26,6 +26,12 @@ import java.io.NotActiveException;
 import java.util.Map;
 import java.util.Optional;
 
+
+/*
+* Контроллер страницы управления Каталогом товаров
+*
+* */
+
 @Controller
 @RequestMapping("/product")
 @AllArgsConstructor

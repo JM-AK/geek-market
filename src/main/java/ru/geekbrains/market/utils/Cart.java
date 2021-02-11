@@ -11,6 +11,7 @@ import ru.geekbrains.market.entities.Product;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -43,6 +44,32 @@ public class Cart {
         recalculate();
     }
 
+    public void increment(Long productId) {
+        for (OrderItem o : items) {
+            if (o.getProduct().getId().equals(productId)) {
+                o.incrementQuantity();
+                recalculate();
+                return;
+            }
+        }
+        recalculate();
+    }
+
+    public void decrement(Long productId) {
+        Iterator<OrderItem> iter = items.iterator();
+        while (iter.hasNext()) {
+            OrderItem o = iter.next();
+            if (o.getProduct().getId().equals(productId)) {
+                o.decrementQuantity();
+                if (o.getQuantity() == 0) {
+                    iter.remove();
+                }
+                recalculate();
+                return;
+            }
+        }
+    }
+
     public void setQuantity(Product product, Long quantity) {
         OrderItem orderItem = findOrderFromProduct(product);
         if (orderItem == null) {
@@ -61,6 +88,18 @@ public class Cart {
         recalculate();
     }
 
+    public void remove(Long productId) {
+        Iterator<OrderItem> iter = items.iterator();
+        while (iter.hasNext()) {
+            OrderItem o = iter.next();
+            if (o.getProduct().getId().equals(productId)) {
+                iter.remove();
+                recalculate();
+                return;
+            }
+        }
+    }
+
     public void recalculate() {
         totalPrice = 0.0;
         for (OrderItem o : items) {
@@ -72,4 +111,6 @@ public class Cart {
     private OrderItem findOrderFromProduct(Product p) {
         return items.stream().filter(o -> o.getProduct().getId().equals(p.getId())).findFirst().orElse(null);
     }
+
+
 }
