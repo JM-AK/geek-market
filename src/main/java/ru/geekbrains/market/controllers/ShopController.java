@@ -25,18 +25,12 @@ public class ShopController {
     private static final int INITIAL_PAGE = 0;
     private static final int PAGE_SIZE = 5;
 
-    private UserService userService;
     private ProductService productService;
     private Cart cart;
 
     @Autowired
     public void setProductService(ProductService productService) {
         this.productService = productService;
-    }
-
-    @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
     }
 
     @GetMapping
