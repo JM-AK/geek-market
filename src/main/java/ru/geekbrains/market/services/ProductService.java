@@ -56,4 +56,8 @@ public class ProductService {
     public void deleteAll(){
         productRepository.deleteAll();
     }
+
+    public Optional<Product> findByTitle(String title) {
+        return productRepository.findOneByTitle(title);
+    }
 }
