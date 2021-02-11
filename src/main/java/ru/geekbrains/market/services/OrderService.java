@@ -1,6 +1,5 @@
 package ru.geekbrains.market.services;
 
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.market.entities.Order;
@@ -54,4 +53,8 @@ public class OrderService {
         return order;
     }
 
+    public void changeOrderStatus(Order order, Long statusId) {
+        order.setStatus(orderStatusService.getStatusById(statusId));
+        saveOrder(order);
+    }
 }
