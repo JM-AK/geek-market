@@ -18,6 +18,12 @@ public class ProductFilter {
         StringBuilder filterDefinitionBuilder = new StringBuilder();
         spec = Specification.where(null);
 
+        String filterCategory = params.get("category");
+        if (filterCategory != null && !filterCategory.isBlank()) {
+            spec = spec.and(ProductSpecification.categoryEquals(filterCategory));
+            filterDefinitionBuilder.append("&category=").append(filterCategory);
+        }
+
         String filterTitle = params.get("title");
         if (filterTitle != null && !filterTitle.isBlank()) {
             spec = spec.and(ProductSpecification.titleContains(filterTitle));

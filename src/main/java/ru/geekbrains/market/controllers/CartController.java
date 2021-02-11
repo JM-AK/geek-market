@@ -14,11 +14,7 @@ import ru.geekbrains.market.exceptions.NotFoundException;
 import ru.geekbrains.market.services.ProductService;
 import ru.geekbrains.market.utils.Cart;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.util.Optional;
 
 
 /*
@@ -42,16 +38,6 @@ public class CartController {
             session.setAttribute("cart", cart);
         }
         return "cart";
-    }
-
-    @GetMapping("/add/{product_id}")
-    public void addToCart(
-            @PathVariable(name = "product_id") Long productId,
-            HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Product p = productService.findById(productId).orElseThrow(
-                () -> new NotFoundException());
-        cart.add(p);
-        response.sendRedirect(request.getHeader("referer"));
     }
 
     @GetMapping("/inc/{product_id}")

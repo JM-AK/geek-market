@@ -22,5 +22,8 @@ public class ProductSpecification {
         return ((root, query, builder) -> builder.lessThanOrEqualTo(root.get("price"), maxPrice));
     }
 
-
+    //where p.category = category
+    public static Specification<Product> categoryEquals(String categoryName) {
+        return (root, query, builder) -> builder.equal(root.get("category"), categoryName);
+    }
 }
