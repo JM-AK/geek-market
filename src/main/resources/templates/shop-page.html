@@ -25,7 +25,6 @@
 
     <form th:action="@{/shop}" method="get">
         <input hidden th:value="${page}" th:name="page">
-        <input th:value="${param.category != null ? param.category : null}" th:name="category" type="text" placeholder="Категория">
         <input th:value="${param.title != null ? param.title : null}" th:name="title" type="text" placeholder="Название">
         <input th:value="${param.min_price != null ? param.min_price : null}" th:name="min_price" type="number" placeholder="Минимальная цена">
         <input th:value="${param.max_price != null ? param.max_price : null}" th:name="max_price" type="number" placeholder="Максимальная цена">
@@ -39,7 +38,6 @@
     <table class="table table-hover">
         <thead class="thead-dark">
         <tr>
-            <th>id_custom</th>
             <th>ID</th>
             <th>Картинка</th>
             <th>Название товара</th>
@@ -47,32 +45,32 @@
             <th></th>
         </tr>
         </thead>
+
         <tbody>
 
-        <tr th:each="product,iterStat : ${products.getContent()}">
+        <tr th:if="${products.hasContent()}" th:each="p : ${products.getContent()}">
 
-            <td th:text="${iterStat.index}"/>
-            <td th:text="${product.id}"/>
+            <td th:text="${p.id}"/>
             <td>
-                <img th:if="${product.images.size() > 0}" width="40" height="40" th:src="@{'/images/' + ${product.images[0].path}}" />
+                <img th:if="${p.images.size() > 0}" width="40" height="40" th:src="@{'/images/' + ${p.images[0].path}}" />
             </td>
-            <td th:text="${product.title}"/>
-            <td th:text="${product.price}"/>
+            <td th:text="${p.title}"/>
+            <td th:text="${p.price}"/>
             <td>
-                <a th:href="@{'/shop/cart/add/' + ${product.id}}" class="btn btn-primary">Добавить в корзину</a>
+                <a th:href="@{/shop/cart/add/{product_id}(product_id = ${p.id})}" class="btn btn-primary">Добавить в корзину</a>
             </td>
         </tr>
         </tbody>
     </table>
-    <div th:if="${products.hasContent()}" class="col-12">
+
         <nav aria-label="Page navigation example">
             <ul class="pagination">
                 <li class="page-item" th:classappend="${products.isFirst() ? 'disabled' : ''}">
                     <a class="page-link" th:href="@{/shop(page=${products.previousOrFirstPageable().getPageNumber() + 1}, filters=${filters})}">Previous</a>
                 </li>
 
-                <li th:each="i : ${#numbers.sequence(1, products.totalPages)}" th:classappend="${page == i ? 'active' : ''}" class="page-item">
-                    <a th:class="page-link" th:href="@{/shop(page=${i},filters=${filters})}">[[${i}]]</a>
+                <li th:each="i : ${#numbers.sequence(1, products.totalPages)}" th:classappend="${i == products.number + 1} ? 'active'" class="page-item">>
+                    <a class="page-link" th:href="@{/shop(page=${i},filters=${filters})}">[[${i}]]</a>
                 </li>
 
                 <li class="page-item" th:classappend="${products.isLast()? 'disabled' : ''}">
@@ -80,45 +78,6 @@
                 </li>
             </ul>
         </nav>
-    </div>
-
-<!--
-    <div th:if="${products.hasContent()}" class="col-12">
-                <nav aria-label="Page navigation">
-                    <ul class="pagination">
-                        <li class="page-item" th:classappend="${products.isFirst() ? 'disabled' : ''}">
-                            <a class="page-link"
-                               th:href="@{/product(page=${products.previousOrFirstPageable().getPageNumber() + 1},
-                                            filterDefinition=${filterDefinition},
-                                            sortField=${param.sortField != null ? param.sortField : 'id'},
-                                            sortOrder=${param.sortOrder != null ? param.sortOrder : 'ASC'})
-                                         }">Previous</a>
-                        </li>
-
-                        <li th:each="i: ${#numbers.sequence(1, products.totalPages)}"
-                            th:classappend="${i == products.number + 1} ? 'active'"
-                            class="page-item">
-                            <a class="page-link"
-                               th:href="@{/product(page=${i}, size=${products.size},
-                                                    filterDefinition=${filterDefinition},
-                                                    sortField=${param.sortField != null ? param.sortField : 'id'},
-                                                    sortOrder=${param.sortOrder != null ? param.sortOrder : 'ASC'})
-                                          }">[[${i}]]</a>
-                        </li>
-
-                        <li class="page-item" th:classappend="${products.isLast() ? 'disabled' : ''}">
-                            <a class="page-link"
-                               th:href="@{/product(page=${products.nextOrLastPageable().getPageNumber() + 1},
-                                            filterDefinition=${filterDefinition},
-                                            sortField=${param.sortField != null ? param.sortField : 'id'},
-                                            sortOrder=${param.sortOrder != null ? param.sortOrder : 'ASC'})
-                                         }">Next</a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
- -->
-
 
 </div>
 

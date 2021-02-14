@@ -64,7 +64,7 @@ public class ProductController {
                                    @RequestParam Map<String, String> params
                                    ) {
         logger.info("Product page update");
-        ProductFilter productFilter = new ProductFilter(params);
+        ProductFilter productFilter = new ProductFilter(params,null);
         Page<Product> products = productService.findAllByFilterAndPage(productFilter.getSpec(), page.get(), size.get());
         model.addAttribute("products", products);
         model.addAttribute("filters", productFilter.getFilterDefinition());

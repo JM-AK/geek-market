@@ -2,20 +2,21 @@ package ru.geekbrains.market.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.geekbrains.market.entities.Category;
 import ru.geekbrains.market.entities.Product;
 import ru.geekbrains.market.exceptions.NotFoundException;
+import ru.geekbrains.market.services.CategoryService;
 import ru.geekbrains.market.services.ProductService;
-import ru.geekbrains.market.services.UserService;
 import ru.geekbrains.market.utils.Cart;
 import ru.geekbrains.market.utils.ProductFilter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -26,6 +27,12 @@ public class ShopController {
 
     private ProductService productService;
     private Cart cart;
+    private CategoryService categoryService;
+
+    @Autowired
+    public void setCategoryService(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
 
     @Autowired
     public void setProductService(ProductService productService) {
@@ -35,10 +42,17 @@ public class ShopController {
     @GetMapping
     public String shopPage(Model model,
                            @RequestParam(value = "page") Optional<Integer> page,
-                           @RequestParam Map<String, String> params
+                           @RequestParam Map<String, String> params,
+                           @RequestParam(name = "categories", required = false) List<Long> categoriesIds
     ) {
-        ProductFilter productFilter = new ProductFilter(params);
-        Page<Product> products = productService.findAllByFilterAndPage(productFilter.getSpec(), page.get(), PAGE_SIZE);
+        Integer pageNumber = page.orElse(1);
+        List<Category> categoriesFilter = null;
+        if (categoriesIds != null) {
+            categoriesFilter = categoryService.getCategoriesByIds(categoriesIds);
+        }
+
+        ProductFilter productFilter = new ProductFilter(params, categoriesFilter);
+        Page<Product> products = productService.findAllByFilterAndPage(productFilter.getSpec(), pageNumber, PAGE_SIZE);
 
         model.addAttribute("products", products);
         model.addAttribute("filters", productFilter.getFilterDefinition());

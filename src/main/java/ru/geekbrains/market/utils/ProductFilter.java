@@ -2,27 +2,21 @@ package ru.geekbrains.market.utils;
 
 import lombok.Getter;
 import org.springframework.data.jpa.domain.Specification;
+import ru.geekbrains.market.entities.Category;
 import ru.geekbrains.market.entities.Product;
 import ru.geekbrains.market.repositories.specifications.ProductSpecification;
 
+import java.util.List;
 import java.util.Map;
 
 @Getter
 public class ProductFilter {
-    @Getter
     private Specification<Product> spec;
-    @Getter
     private String filterDefinition;
 
-    public ProductFilter(Map<String, String> params) {
+    public ProductFilter(Map<String, String> params, List<Category> categories) {
         StringBuilder filterDefinitionBuilder = new StringBuilder();
         spec = Specification.where(null);
-
-        String filterCategory = params.get("category");
-        if (filterCategory != null && !filterCategory.isBlank()) {
-            spec = spec.and(ProductSpecification.categoryEquals(filterCategory));
-            filterDefinitionBuilder.append("&category=").append(filterCategory);
-        }
 
         String filterTitle = params.get("title");
         if (filterTitle != null && !filterTitle.isBlank()) {
@@ -40,6 +34,18 @@ public class ProductFilter {
             Double maxPrice = Double.valueOf(params.get("max_price"));
             spec = spec.and(ProductSpecification.priceLessOrEqualsThan(maxPrice));
             filterDefinitionBuilder.append("&max_price=").append(maxPrice);
+        }
+
+        if (categories != null && !categories.isEmpty()) {
+            Specification specCategories = null;
+            for (Category c : categories) {
+                if (specCategories == null) {
+                    specCategories = ProductSpecification.categoryIs(c);
+                } else {
+                    specCategories = specCategories.or(ProductSpecification.categoryIs(c));
+                }
+            }
+            spec = spec.and(specCategories);
         }
 
         filterDefinition = filterDefinitionBuilder.toString();

@@ -1,6 +1,7 @@
 package ru.geekbrains.market.repositories.specifications;
 
 import org.springframework.data.jpa.domain.Specification;
+import ru.geekbrains.market.entities.Category;
 import ru.geekbrains.market.entities.Product;
 
 
@@ -23,7 +24,7 @@ public class ProductSpecification {
     }
 
     //where p.category = category
-    public static Specification<Product> categoryEquals(String categoryName) {
-        return (root, query, builder) -> builder.equal(root.get("category"), categoryName);
+    public static Specification<Product> categoryIs(Category category) {
+        return (root, query, builder) -> builder.isMember(category, root.get("categories"));
     }
 }
