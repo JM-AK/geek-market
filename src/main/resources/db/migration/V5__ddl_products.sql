@@ -5,7 +5,6 @@ DROP TABLE IF EXISTS products;
 CREATE TABLE products
 (
     id                INT(11)       NOT NULL AUTO_INCREMENT,
-    category_id       INT(11)       NOT NULL,
     vendor_code       VARCHAR(8)    NOT NULL,
     title             VARCHAR(255)  NOT NULL,
     short_description VARCHAR(1000) NOT NULL,
