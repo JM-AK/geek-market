@@ -24,10 +24,18 @@
     <h1 th:text="Фильтры" />
 
     <form th:action="@{/shop}" method="get">
-        <input hidden th:value="${page}" th:name="page">
-        <input th:value="${param.title != null ? param.title : null}" th:name="title" type="text" placeholder="Название">
-        <input th:value="${param.min_price != null ? param.min_price : null}" th:name="min_price" type="number" placeholder="Минимальная цена">
-        <input th:value="${param.max_price != null ? param.max_price : null}" th:name="max_price" type="number" placeholder="Максимальная цена">
+        <div class="form-group">
+            <label>Категории</label>
+            <div class="form-check" th:each="c : ${@categoryService.getAllCategories()}">
+                <input type="checkbox" class="form-check-input" name="categories" th:value="${c.id}">
+                <label class="form-check-label" th:text="${c.title}"></label>
+            </div>
+        </div>
+        <div>
+            <input th:value="${param.title != null ? param.title : null}" th:name="title" type="text" placeholder="Название">
+            <input th:value="${param.min_price != null ? param.min_price : null}" th:name="min_price" type="number" placeholder="Минимальная цена">
+            <input th:value="${param.max_price != null ? param.max_price : null}" th:name="max_price" type="number" placeholder="Максимальная цена">
+        </div>
         <button type="submit" class="btn btn-primary">Фильтровать</button>
     </form>
 
@@ -49,13 +57,12 @@
         <tbody>
 
         <tr th:if="${products.hasContent()}" th:each="p : ${products.getContent()}">
-
-            <td th:text="${p.id}"/>
+            <td th:text="${p.id}"></td>
             <td>
                 <img th:if="${p.images.size() > 0}" width="40" height="40" th:src="@{'/images/' + ${p.images[0].path}}" />
             </td>
-            <td th:text="${p.title}"/>
-            <td th:text="${p.price}"/>
+            <td th:text="${p.title}"></td>
+            <td th:text="${p.price}"></td>
             <td>
                 <a th:href="@{/shop/cart/add/{product_id}(product_id = ${p.id})}" class="btn btn-primary">Добавить в корзину</a>
             </td>
@@ -66,15 +73,16 @@
         <nav aria-label="Page navigation example">
             <ul class="pagination">
                 <li class="page-item" th:classappend="${products.isFirst() ? 'disabled' : ''}">
-                    <a class="page-link" th:href="@{/shop(page=${products.previousOrFirstPageable().getPageNumber() + 1}, filters=${filters})}">Previous</a>
+                    <a class="page-link" th:href="@{/shop(page=${products.previousOrFirstPageable().getPageNumber() + 1}, filters=${filters})}">Назад</a>
                 </li>
 
-                <li th:each="i : ${#numbers.sequence(1, products.totalPages)}" th:classappend="${i == products.number + 1} ? 'active'" class="page-item">>
-                    <a class="page-link" th:href="@{/shop(page=${i},filters=${filters})}">[[${i}]]</a>
+                <li class="page-item" th:classappend="${i == products.getNumber() + 1 ? 'active' : ''}"
+                    th:each="i : ${#numbers.sequence((products.getNumber() + 1 > 2 ? products.getNumber() - 1 : 1), (products.getNumber() + 3 < products.getTotalPages() ? products.getNumber() + 3 : products.getTotalPages()) )}">
+                    <a class="page-link" th:text="${i}" th:href="@{/shop(page=${i},filters=${filters})}"></a>
                 </li>
 
                 <li class="page-item" th:classappend="${products.isLast()? 'disabled' : ''}">
-                    <a class="page-link" th:href="@{/shop(page=${products.nextOrLastPageable().getPageNumber() + 1},filters=${filters})}">Next</a>
+                    <a class="page-link" th:href="@{/shop(page=${products.nextOrLastPageable().getPageNumber() + 1},filters=${filters})}">Вперед</a>
                 </li>
             </ul>
         </nav>
