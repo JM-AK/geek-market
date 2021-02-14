@@ -1,6 +1,5 @@
 package ru.geekbrains.market.controllers;
 
-import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,39 +19,39 @@ import ru.geekbrains.market.exceptions.NotFoundException;
 import ru.geekbrains.market.services.CategoryService;
 import ru.geekbrains.market.services.ImageSaverService;
 import ru.geekbrains.market.services.ProductService;
+import ru.geekbrains.market.utils.Cart;
 import ru.geekbrains.market.utils.ProductFilter;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.io.NotActiveException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-
-/*
-* Контроллер страницы управления Каталогом товаров
-*
-* */
-
 @Controller
 @RequestMapping("/catalog")
-@AllArgsConstructor
-public class ProductController {
+public class CatalogController {
     private ProductService productService;
     private CategoryService categoryService;
     private ImageSaverService imageSaverService;
 
-    private static final int PAGE_SIZE = 5;
-    private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
+    private Cart cart;
 
-    @Autowired
-    public void setProductService(ProductService productService) {
-        this.productService = productService;
-    }
+    private static final int PAGE_SIZE = 5;
+
+    private static final Logger logger = LoggerFactory.getLogger(CatalogController.class);
 
     @Autowired
     public void setCategoryService(CategoryService categoryService) {
         this.categoryService = categoryService;
+    }
+
+    @Autowired
+    public void setProductService(ProductService productService) {
+        this.productService = productService;
     }
 
     @Autowired
@@ -61,21 +60,33 @@ public class ProductController {
     }
 
     @GetMapping
-    public String indexProductPage(Model model,
-                                   @RequestParam(name = "page") Optional<Integer> page,
-                                   @RequestParam Map<String, String> params,
-                                   @RequestParam(name = "categories", required = false) List<Long> categoriesIds
-                                   ) {
-        logger.info("Product page update");
+    public String catalogPage(Model model,
+                           @RequestParam(value = "page") Optional<Integer> page,
+                           @RequestParam Map<String, String> params,
+                           @RequestParam(name = "categories", required = false) List<Long> categoriesIds
+    ) {
         List<Category> categoriesFilter = null;
         if (categoriesIds != null) {
             categoriesFilter = categoryService.getCategoriesByIds(categoriesIds);
         }
-        ProductFilter productFilter = new ProductFilter(params,categoriesFilter);
-        Page<Product> products = productService.findAllByFilterAndPage(productFilter.getSpec(), page, Optional.of(PAGE_SIZE) );
+
+        ProductFilter productFilter = new ProductFilter(params, categoriesFilter);
+        Page<Product> products = productService.findAllByFilterAndPage(productFilter.getSpec(), page, Optional.of(PAGE_SIZE));
+
         model.addAttribute("products", products);
         model.addAttribute("filters", productFilter.getFilterDefinition());
-        return "catalog";
+        return "catalog-page";
+    }
+
+    @GetMapping("/cart/add/{product_id}")
+    public void addToCart(
+            @PathVariable(name = "product_id") Long productId,
+            HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        Product p = productService.findById(productId).orElseThrow(
+                () -> new NotFoundException());
+        cart.add(p);
+        response.sendRedirect(request.getHeader("referer"));
     }
 
     @GetMapping("/{id}")

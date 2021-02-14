@@ -16,14 +16,14 @@
 
 <body>
 
-<div th:replace="~{navigation :: navi(Shop)}"/>
+<div th:replace="~{navigation :: navi(Catalog)}"/>
 
 <div class="container">
     <br>
 
     <h1 th:text="Фильтры" />
 
-    <form th:action="@{/shop}" method="get">
+    <form th:action="@{/catalog}" method="get">
         <div class="form-group">
             <label>Категории</label>
             <div class="form-check" th:each="c : ${@categoryService.getAllCategories()}">
@@ -64,7 +64,7 @@
             <td th:text="${p.title}"></td>
             <td th:text="${p.price}"></td>
             <td>
-                <a th:href="@{/shop/cart/add/{product_id}(product_id = ${p.id})}" class="btn btn-primary">Добавить в корзину</a>
+                <a th:href="@{/cart/add/{product_id}(product_id = ${p.id})}" class="btn btn-primary">Добавить в корзину</a>
             </td>
         </tr>
         </tbody>
@@ -73,16 +73,16 @@
         <nav aria-label="Page navigation example">
             <ul class="pagination">
                 <li class="page-item" th:classappend="${products.isFirst() ? 'disabled' : ''}">
-                    <a class="page-link" th:href="@{/shop(page=${products.previousOrFirstPageable().getPageNumber() + 1}, filters=${filters})}">Назад</a>
+                    <a class="page-link" th:href="@{/catalog(page=${products.previousOrFirstPageable().getPageNumber() + 1}, filters=${filters})}">Назад</a>
                 </li>
 
                 <li class="page-item" th:classappend="${i == products.getNumber() + 1 ? 'active' : ''}"
                     th:each="i : ${#numbers.sequence((products.getNumber() + 1 > 2 ? products.getNumber() - 1 : 1), (products.getNumber() + 3 < products.getTotalPages() ? products.getNumber() + 3 : products.getTotalPages()) )}">
-                    <a class="page-link" th:text="${i}" th:href="@{/shop(page=${i},filters=${filters})}"></a>
+                    <a class="page-link" th:text="${i}" th:href="@{/catalog(page=${i},filters=${filters})}"></a>
                 </li>
 
                 <li class="page-item" th:classappend="${products.isLast()? 'disabled' : ''}">
-                    <a class="page-link" th:href="@{/shop(page=${products.nextOrLastPageable().getPageNumber() + 1},filters=${filters})}">Вперед</a>
+                    <a class="page-link" th:href="@{/catalog(page=${products.nextOrLastPageable().getPageNumber() + 1},filters=${filters})}">Вперед</a>
                 </li>
             </ul>
         </nav>
