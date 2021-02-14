@@ -22,7 +22,6 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/shop")
 public class ShopController {
-    private static final int INITIAL_PAGE = 0;
     private static final int PAGE_SIZE = 5;
 
     private ProductService productService;
@@ -38,15 +37,10 @@ public class ShopController {
                            @RequestParam(value = "page") Optional<Integer> page,
                            @RequestParam Map<String, String> params
     ) {
-        int currentPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
-
         ProductFilter productFilter = new ProductFilter(params);
-
         Page<Product> products = productService.findAllByFilterAndPage(productFilter.getSpec(), page.get(), PAGE_SIZE);
 
         model.addAttribute("products", products);
-        model.addAttribute("page", currentPage);
-        model.addAttribute("totalPage", products.getTotalPages());
         model.addAttribute("filters", productFilter.getFilterDefinition());
         return "shop-page";
     }
