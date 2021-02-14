@@ -44,7 +44,7 @@ public class ShopController {
 
         Page<Product> products = productService.findAllByFilterAndPage(productFilter.getSpec(), page.get(), PAGE_SIZE);
 
-        model.addAttribute("products", products.getContent());
+        model.addAttribute("products", products);
         model.addAttribute("page", currentPage);
         model.addAttribute("totalPage", products.getTotalPages());
         model.addAttribute("filters", productFilter.getFilterDefinition());
