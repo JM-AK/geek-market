@@ -3,12 +3,11 @@ package ru.geekbrains.market.controllers;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import ru.geekbrains.market.entities.Product;
 import ru.geekbrains.market.exceptions.NotFoundException;
 import ru.geekbrains.market.services.ProductService;
@@ -52,7 +51,8 @@ public class CartController {
         return "redirect:/cart";
     }
 
-    @GetMapping()
+    //ToDo fix address
+    @GetMapping("/set/{product_id}")
     public String setProductQuantity(Model model,
                                      @RequestParam(name = "product_id") Long productId,
                                      @RequestParam(name = "product_quantity") Long quantity) {
@@ -68,7 +68,12 @@ public class CartController {
         return "redirect:/cart";
     }
 
-
+    @ExceptionHandler
+    public ModelAndView notFoundExceptionHandler(NotFoundException ex){
+        ModelAndView modelAndView = new ModelAndView("not found");
+        modelAndView.setStatus(HttpStatus.NOT_FOUND);
+        return modelAndView;
+    }
 
 
 
