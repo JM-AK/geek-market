@@ -9,7 +9,7 @@ CREATE TABLE products_categories
 
     PRIMARY KEY (product_id, category_id),
 
-    CONSTRAINT FK_PRODUCT_ID_01 FOREIGN KEY (product_id)
+    CONSTRAINT FK_PRODUCT_ID_CAT FOREIGN KEY (product_id)
         REFERENCES products (id)
         ON DELETE NO ACTION ON UPDATE NO ACTION,
 

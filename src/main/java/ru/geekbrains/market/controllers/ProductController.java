@@ -13,6 +13,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import ru.geekbrains.market.entities.Category;
 import ru.geekbrains.market.entities.Product;
 import ru.geekbrains.market.entities.ProductImage;
 import ru.geekbrains.market.exceptions.NotFoundException;
@@ -23,6 +24,7 @@ import ru.geekbrains.market.utils.ProductFilter;
 
 import javax.validation.Valid;
 import java.io.NotActiveException;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -40,6 +42,7 @@ public class ProductController {
     private CategoryService categoryService;
     private ImageSaverService imageSaverService;
 
+    private static final int PAGE_SIZE = 5;
     private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
     @Autowired
@@ -60,12 +63,16 @@ public class ProductController {
     @GetMapping
     public String indexProductPage(Model model,
                                    @RequestParam(name = "page") Optional<Integer> page,
-                                   @RequestParam(name = "size") Optional<Integer> size,
-                                   @RequestParam Map<String, String> params
+                                   @RequestParam Map<String, String> params,
+                                   @RequestParam(name = "categories", required = false) List<Long> categoriesIds
                                    ) {
         logger.info("Product page update");
-        ProductFilter productFilter = new ProductFilter(params,null);
-        Page<Product> products = productService.findAllByFilterAndPage(productFilter.getSpec(), page, size);
+        List<Category> categoriesFilter = null;
+        if (categoriesIds != null) {
+            categoriesFilter = categoryService.getCategoriesByIds(categoriesIds);
+        }
+        ProductFilter productFilter = new ProductFilter(params,categoriesFilter);
+        Page<Product> products = productService.findAllByFilterAndPage(productFilter.getSpec(), page, Optional.of(PAGE_SIZE) );
         model.addAttribute("products", products);
         model.addAttribute("filters", productFilter.getFilterDefinition());
         return "catalog";
