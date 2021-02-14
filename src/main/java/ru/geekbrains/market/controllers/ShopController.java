@@ -38,7 +38,7 @@ public class ShopController {
                            @RequestParam(value = "page") Optional<Integer> page,
                            @RequestParam Map<String, String> params
     ) {
-        final int currentPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
+        int currentPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
 
         ProductFilter productFilter = new ProductFilter(params);
 
@@ -47,7 +47,7 @@ public class ShopController {
         model.addAttribute("products", products.getContent());
         model.addAttribute("page", currentPage);
         model.addAttribute("totalPage", products.getTotalPages());
-        model.addAttribute("filterDefinition", productFilter.getFilterDefinition());
+        model.addAttribute("filters", productFilter.getFilterDefinition());
         return "shop-page";
     }
 

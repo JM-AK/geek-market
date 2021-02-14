@@ -33,7 +33,7 @@ import java.util.Optional;
 * */
 
 @Controller
-@RequestMapping("/product")
+@RequestMapping("/catalog")
 @AllArgsConstructor
 public class ProductController {
     private ProductService productService;
@@ -65,10 +65,9 @@ public class ProductController {
                                    ) {
         logger.info("Product page update");
         ProductFilter productFilter = new ProductFilter(params);
-
         Page<Product> products = productService.findAllByFilterAndPage(productFilter.getSpec(), page.get(), size.get());
         model.addAttribute("products", products);
-        model.addAttribute("filterDefinition", productFilter.getFilterDefinition());
+        model.addAttribute("filters", productFilter.getFilterDefinition());
         return "catalog";
     }
 
