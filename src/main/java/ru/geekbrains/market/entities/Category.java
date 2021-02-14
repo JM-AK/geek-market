@@ -1,5 +1,6 @@
 package ru.geekbrains.market.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -22,6 +23,10 @@ public class Category {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(mappedBy = "category")
+    @ManyToMany
+    @JoinTable(name = "products_categories",
+            joinColumns = @JoinColumn(name = "category_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id"))
+    @JsonBackReference
     private List<Product> products;
 }

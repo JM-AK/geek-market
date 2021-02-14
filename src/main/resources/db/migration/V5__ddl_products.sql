@@ -13,8 +13,7 @@ CREATE TABLE products
     price             DECIMAL(8, 2) NOT NULL,
     create_at         TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_at         TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (id),
-    CONSTRAINT FK_CATEGORY_ID FOREIGN KEY (category_id)
-        REFERENCES categories (id)
+    PRIMARY KEY (id)
+
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;

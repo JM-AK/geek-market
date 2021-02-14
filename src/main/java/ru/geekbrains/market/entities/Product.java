@@ -46,10 +46,11 @@ public class Product {
     @Digits(integer = 10, fraction = 2)
     private double price;
 
-    @ManyToOne
-    @NotNull(message = "категория не выбрана")
-    @JoinColumn(name = "category_id")
-    private Category category;
+    @ManyToMany
+    @JoinTable(name = "products_categories",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private List<Category> categories;
 
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "product")
     private List<ProductImage> images;
