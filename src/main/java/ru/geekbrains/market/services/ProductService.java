@@ -17,6 +17,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class ProductService {
     private ProductRepository productRepository;
+    private static final int PAGE_SIZE = 5;
 
     @Autowired
     public void setProductRepository(ProductRepository productRepository) {
@@ -34,11 +35,11 @@ public class ProductService {
                     Sort.by(Sort.Direction.fromString(sortOrder.get()), sortField.get()))
             );
         }
-        return productRepository.findAll(spec, PageRequest.of(page.orElse(1) - 1, size.orElse(5)));
+        return productRepository.findAll(spec, PageRequest.of(page.orElse(1) - 1, size.orElse(PAGE_SIZE)));
     }
 
-    public Page<Product> findAllByFilterAndPage(Specification<Product> spec, int page, int size) {
-        return productRepository.findAll(spec, PageRequest.of(page, size));
+    public Page<Product> findAllByFilterAndPage(Specification<Product> spec, Optional<Integer> page, Optional<Integer> size) {
+        return productRepository.findAll(spec, PageRequest.of(page.orElse(1)-1, size.orElse(PAGE_SIZE)));
     }
 
     public Optional<Product> findById(Long id){

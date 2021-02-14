@@ -23,11 +23,10 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/shop")
 public class ShopController {
-    private static final int PAGE_SIZE = 5;
-
     private ProductService productService;
     private Cart cart;
     private CategoryService categoryService;
+    private static final int PAGE_SIZE = 5;
 
     @Autowired
     public void setCategoryService(CategoryService categoryService) {
@@ -45,14 +44,13 @@ public class ShopController {
                            @RequestParam Map<String, String> params,
                            @RequestParam(name = "categories", required = false) List<Long> categoriesIds
     ) {
-        Integer pageNumber = page.orElse(1);
         List<Category> categoriesFilter = null;
         if (categoriesIds != null) {
             categoriesFilter = categoryService.getCategoriesByIds(categoriesIds);
         }
 
         ProductFilter productFilter = new ProductFilter(params, categoriesFilter);
-        Page<Product> products = productService.findAllByFilterAndPage(productFilter.getSpec(), pageNumber, PAGE_SIZE);
+        Page<Product> products = productService.findAllByFilterAndPage(productFilter.getSpec(), page, Optional.of(PAGE_SIZE));
 
         model.addAttribute("products", products);
         model.addAttribute("filters", productFilter.getFilterDefinition());
