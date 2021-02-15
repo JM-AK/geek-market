@@ -17,14 +17,12 @@ import java.util.List;
 
 @Component
 @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
-@NoArgsConstructor
 @Data
 public class Cart {
     private List<OrderItem> items;
     private Double totalPrice;
 
-    @PostConstruct
-    public void init() {
+    public Cart() {
         items = new ArrayList<>();
         totalPrice = 0.0;
     }
