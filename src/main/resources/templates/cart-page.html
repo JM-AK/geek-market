@@ -45,7 +45,12 @@
                 <td th:text="${itrStat.index + 1}"/>
                 <td th:text="${cartItem.product.title}"/>
                 <td th:text="${cartItem.itemPrice}"/>
-                <td th:text="${cartItem.quantity}"/>
+                <td>
+                    <a class="btn btn-danger" th:href="@{/cart/dec/{product_id}(product_id = ${cartItem.product.id})}">-</a>
+                    <span th:text="${cartItem.quantity}"/>
+                    <a class="btn btn-success" th:href="@{/cart/inc/{product_id}(product_id = ${cartItem.product.id})}">+</a>
+                    <a class="btn btn-danger" th:href="@{/cart/remove/{product_id}(product_id = ${cartItem.product.id})}">X</a>
+                </td>
                 <td th:text="${cartItem.totalPrice}"/>
             </tr>
             <tr>
@@ -63,35 +68,6 @@
     </div>
 
 </div>
-
-<!--
-<span th:unless="${@cart.items.size() > 0}">Ваша корзина пуста</span>
-<table class="table table-striped" th:if="${@cart.items.size() > 0}">
-    <thead>
-    <tr>
-        <td>Название</td>
-        <td>Количество</td>
-        <td>Цена</td>
-        <td>Операции</td>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="i : ${@cart.getItems()}">
-        <td th:text="${i.product.title}"></td>
-        <td>
-            <a class="btn btn-primary" th:href="@{'/cart/decrement/' + ${i.product.id}}">-</a>
-            <span th:text="'  ' + ${i.quantity} + '  '"/>
-            <a class="btn btn-primary" th:href="@{'/cart/add/' + ${i.product.id}}">+</a>
-        </td>
-        <td th:text="${i.price}"></td>
-        <td><a class="btn btn-danger" th:href="@{'/cart/remove/' + ${i.product.id}}">Удалить</a></td>
-    </tr>
-    </tbody>
-</table>
--->
-
-
-
 
 <div class="modal fade" id="authWarningModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
