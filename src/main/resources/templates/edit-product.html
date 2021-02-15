@@ -30,7 +30,7 @@
                     <h4 class="card-title mt-2"><span th:text="${product.title == null} ? 'Добавление товара' : 'Изменение товара'"></span></h4>
                 </header>
                 <article class="card-body">
-                    <form th:action="@{/catalog/edit}" th:object="${product}" method="post" enctype="multipart/form-data">
+                    <form th:action="@{/catalog/edit}" th:object="${product}" method="POST" enctype="multipart/form-data">
                         <input th:field="*{id}" type="hidden" class="form-control">
 
                         <div class="form-row">

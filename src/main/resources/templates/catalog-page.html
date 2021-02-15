@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="utf-8"/>
 
@@ -51,6 +52,7 @@
             <th>Название товара</th>
             <th>Цена</th>
             <th></th>
+            <th></th>
         </tr>
         </thead>
 
@@ -66,6 +68,16 @@
             <td>
                 <a th:href="@{/cart/add/{product_id}(product_id = ${p.id})}" class="btn btn-primary">Добавить в корзину</a>
             </td>
+            <td sec:authorize="hasRole('ADMIN')">
+                <a class="btn btn-success" th:href="@{/catalog/edit/{id}(id = ${p.id})}">
+                    <i class="fas fa-edit">Редактировать</i>
+                </a>
+
+                <form class="d-inline" th:href="@{/catalog/{id}(id = ${p.id})}" th:method="DELETE" >
+                    <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt">Удалить</i></button>
+                </form>
+            </td>
+
         </tr>
         </tbody>
     </table>

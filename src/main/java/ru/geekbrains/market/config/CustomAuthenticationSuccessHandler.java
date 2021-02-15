@@ -32,7 +32,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 		if(!request.getHeader("referer").contains("login")) {
 			response.sendRedirect(request.getHeader("referer"));
 		} else {
-			response.sendRedirect(request.getContextPath() + "/shop");
+			response.sendRedirect(request.getContextPath() + "/catalog");
 		}
 	}
 }
