@@ -13,7 +13,9 @@ import ru.geekbrains.market.exceptions.NotFoundException;
 import ru.geekbrains.market.services.ProductService;
 import ru.geekbrains.market.utils.Cart;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 
 /*
@@ -25,28 +27,35 @@ import javax.servlet.http.HttpSession;
 @AllArgsConstructor
 public class CartController {
     private ProductService productService;
-    private Cart cart;
 
     private static final Logger logger = LoggerFactory.getLogger(CartController.class);
 
     @GetMapping
     public String showCartPage(HttpSession session, Model model) {
-        Cart cart = (Cart) session.getAttribute("cart");
-        if (cart == null) {
-            cart = new Cart();
-            session.setAttribute("cart", cart);
-        }
-        return "cart";
+        Cart cart = getCurrentCart(session);
+        model.addAttribute("cart", cart);
+        return "cart-page";
+    }
+
+    @GetMapping("/add/{product_id}")
+    public String addToCart(@PathVariable(name = "product_id") Long productId, HttpServletRequest request) throws IOException {
+        Product p = productService.findById(productId).orElseThrow(() -> new NotFoundException());
+        Cart cart = getCurrentCart(request.getSession());
+        cart.add(p);
+        String referrer = request.getHeader("referer");
+        return "redirect:" + referrer;
     }
 
     @GetMapping("/inc/{product_id}")
-    public String incrementProduct(@PathVariable(name = "product_id") Long productId) {
+    public String incrementProduct(@PathVariable(name = "product_id") Long productId, HttpSession session) {
+        Cart cart = getCurrentCart(session);
         cart.increment(productId);
         return "redirect:/cart";
     }
 
     @GetMapping("/dec/{product_id}")
-    public String decrementProduct(@PathVariable(name = "product_id") Long productId) {
+    public String decrementProduct(@PathVariable(name = "product_id") Long productId, HttpSession session) {
+        Cart cart = getCurrentCart(session);
         cart.decrement(productId);
         return "redirect:/cart";
     }
@@ -55,15 +64,18 @@ public class CartController {
     @GetMapping("/set/{product_id}")
     public String setProductQuantity(Model model,
                                      @RequestParam(name = "product_id") Long productId,
-                                     @RequestParam(name = "product_quantity") Long quantity) {
+                                     @RequestParam(name = "product_quantity") Long quantity,
+                                     HttpSession session) {
         Product p = productService.findById(productId).orElseThrow(
                 () -> new NotFoundException());
+        Cart cart = getCurrentCart(session);
         cart.setQuantity(p,quantity);
         return "redirect:/cart";
     }
 
     @GetMapping("/remove/{product_id}")
-    public String removeProduct(@PathVariable(name = "product_id") Long productId) {
+    public String removeProduct(@PathVariable(name = "product_id") Long productId, HttpSession session) {
+        Cart cart = getCurrentCart(session);
         cart.remove(productId);
         return "redirect:/cart";
     }
@@ -75,7 +87,14 @@ public class CartController {
         return modelAndView;
     }
 
-
+    public Cart getCurrentCart(HttpSession session) {
+        Cart cart = (Cart) session.getAttribute("cart");
+        if (cart == null) {
+            cart = new Cart();
+            session.setAttribute("cart", cart);
+        }
+        return cart;
+    }
 
 
 }

@@ -38,8 +38,6 @@ public class CatalogController {
     private CategoryService categoryService;
     private ImageSaverService imageSaverService;
 
-    private Cart cart;
-
     private static final int PAGE_SIZE = 5;
 
     private static final Logger logger = LoggerFactory.getLogger(CatalogController.class);
@@ -78,17 +76,6 @@ public class CatalogController {
         return "catalog-page";
     }
 
-    @GetMapping("/cart/add/{product_id}")
-    public void addToCart(
-            @PathVariable(name = "product_id") Long productId,
-            HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-        Product p = productService.findById(productId).orElseThrow(
-                () -> new NotFoundException());
-        cart.add(p);
-        response.sendRedirect(request.getHeader("referer"));
-    }
-
     @GetMapping("/{id}")
     public Product getProductById(@PathVariable Long id) {
         return productService.findById(id).orElseThrow(NotFoundException::new);
@@ -104,7 +91,7 @@ public class CatalogController {
         }
         model.addAttribute("product", product);
         model.addAttribute("categories", categoryService.getAllCategories());
-        return "edit_product";
+        return "edit-product";
     }
 
 
@@ -116,7 +103,7 @@ public class CatalogController {
 
         if(bindingResult.hasErrors()){
             model.addAttribute("categories", categoryService.getAllCategories());
-            return "edit_product";
+            return "edit-product";
         }
 
         if (!file.isEmpty()) {

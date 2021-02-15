@@ -25,6 +25,10 @@
     <br>
     <h1>Корзина</h1>
 
+    <div th:unless="${cart.getItems().size() > 0}" >
+        <span>Ваша корзина пуста</span>
+    </div>
+
     <div th:if="${cart.getItems().size() > 0}" >
         <table class="table table-hover">
             <thead class="thead-dark">
@@ -47,20 +51,47 @@
             <tr>
                 <td/><td/><td/>
                 <td>Итого заказ:</td>
-                <td th:text="${cart.totalCost}"/>
+                <td th:text="${cart.totalPrice}"/>
             </tr>
             </tbody>
         </table>
         <br>
 
-        <a sec:authorize="isAuthenticated()" type="button" class="btn btn-primary" th:href="@{/shop/order/fill}">Продолжить оформление заказа</a>
-        <a sec:authorize="isAnonymous()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#authWarningModal">Продолжить оформление заказа</a>
+        <a sec:authorize="isAuthenticated()" type="button" class="btn btn-primary" th:href="@{/order/fill}" th:if="${@cart.items.size() > 0}">Оформить заказ</a>
+        <a sec:authorize="isAnonymous()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#authWarningModal">Оформить заказ</a>
 
     </div>
-    <div th:unless="${cart.getItems().size() > 0}" >
-        <span>Ваша корзина пуста</span>
-    </div>
+
 </div>
+
+<!--
+<span th:unless="${@cart.items.size() > 0}">Ваша корзина пуста</span>
+<table class="table table-striped" th:if="${@cart.items.size() > 0}">
+    <thead>
+    <tr>
+        <td>Название</td>
+        <td>Количество</td>
+        <td>Цена</td>
+        <td>Операции</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="i : ${@cart.getItems()}">
+        <td th:text="${i.product.title}"></td>
+        <td>
+            <a class="btn btn-primary" th:href="@{'/cart/decrement/' + ${i.product.id}}">-</a>
+            <span th:text="'  ' + ${i.quantity} + '  '"/>
+            <a class="btn btn-primary" th:href="@{'/cart/add/' + ${i.product.id}}">+</a>
+        </td>
+        <td th:text="${i.price}"></td>
+        <td><a class="btn btn-danger" th:href="@{'/cart/remove/' + ${i.product.id}}">Удалить</a></td>
+    </tr>
+    </tbody>
+</table>
+-->
+
+
+
 
 <div class="modal fade" id="authWarningModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
