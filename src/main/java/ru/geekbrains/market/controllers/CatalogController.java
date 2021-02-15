@@ -98,7 +98,6 @@ public class CatalogController {
 
     @PostMapping("/edit")
     public String editProduct(@ModelAttribute Product product, @RequestParam("file") MultipartFile file) {
-        System.out.println(product);
         if (!file.isEmpty()) {
             String pathToSavedImage = imageSaverService.saveFile(file);
             ProductImage productImage = new ProductImage();
@@ -110,9 +109,11 @@ public class CatalogController {
         return "redirect:/catalog";
     }
 
-    @DeleteMapping("/{id}")
+    //ToDo узнать, почему не работал DeleteMapping
+    @PostMapping("delete/{id}")
     public String deleteById(@PathVariable(value = "id") Long id) {
         logger.info("Delete product with id {}", id);
+        System.out.println("Delete product with id {}" + id);
         if (productService.findById(id).isEmpty()) {
             throw new ResourceNotFoundException("Product with id: " + id + " doesn't exists (for delete)");
         }
