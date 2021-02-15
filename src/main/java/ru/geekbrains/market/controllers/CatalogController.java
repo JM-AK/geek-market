@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -96,16 +97,8 @@ public class CatalogController {
 
 
     @PostMapping("/edit")
-    public String editProduct(@Valid Product product, BindingResult bindingResult, Model model, @RequestParam("file") MultipartFile file) {
-        if (product.getId() == 0 && productService.findByTitle(product.getTitle()).isPresent()) {
-            bindingResult.addError(new ObjectError("product.title", "Товар с таким названием уже существует")); // todo не отображает сообщение
-        }
-
-        if(bindingResult.hasErrors()){
-            model.addAttribute("categories", categoryService.getAllCategories());
-            return "edit-product";
-        }
-
+    public String editProduct(@ModelAttribute Product product, @RequestParam("file") MultipartFile file) {
+        System.out.println(product);
         if (!file.isEmpty()) {
             String pathToSavedImage = imageSaverService.saveFile(file);
             ProductImage productImage = new ProductImage();
@@ -120,6 +113,9 @@ public class CatalogController {
     @DeleteMapping("/{id}")
     public String deleteById(@PathVariable(value = "id") Long id) {
         logger.info("Delete product with id {}", id);
+        if (productService.findById(id).isEmpty()) {
+            throw new ResourceNotFoundException("Product with id: " + id + " doesn't exists (for delete)");
+        }
         productService.deleteById(id);
         return "redirect:/catalog";
     }

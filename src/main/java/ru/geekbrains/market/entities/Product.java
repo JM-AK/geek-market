@@ -55,7 +55,7 @@ public class Product {
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "product")
     private List<ProductImage> images;
 
-    @Column(name = "create_at")
+    @Column(name = "create_at", nullable=false, updatable = false )
     @CreationTimestamp
     private LocalDateTime createAt;
 

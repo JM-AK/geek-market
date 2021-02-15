@@ -69,7 +69,7 @@
                 <a th:href="@{/cart/add/{product_id}(product_id = ${p.id})}" class="btn btn-primary">Добавить в корзину</a>
             </td>
             <td sec:authorize="hasRole('ADMIN')">
-                <a class="btn btn-success" th:href="@{/catalog/edit/{id}(id = ${p.id})}">
+                <a class="btn btn-success" th:href="@{/catalog/edit/{id}(id = ${p.id})}" th:method="GET">
                     <i class="fas fa-edit">Редактировать</i>
                 </a>
 
