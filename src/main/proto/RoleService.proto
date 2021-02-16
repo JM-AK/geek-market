@@ -8,15 +8,11 @@ message RoleRequest {
   string username = 1;
 }
 
-message Role {
-  int32 id = 1;
+message RoleResponse {
+  int64 id = 1;
   string name = 2;
 }
 
-message RoleResponse {
-  repeated Role role  = 1;
-}
-
 service RoleService {
-  rpc getRole(RoleRequest) returns (RoleResponse);
+  rpc ListRoles(RoleRequest) returns (stream RoleResponse);
 }
