@@ -5,11 +5,16 @@ option java_multiple_files = true;
 package ru.geekbrains.market;
 
 message RoleRequest {
-  string name = 1;
+  string username = 1;
+}
+
+message Role {
+  int32 id = 1;
+  string name = 2;
 }
 
 message RoleResponse {
-  repeated string name  = 1;
+  repeated Role role  = 1;
 }
 
 service RoleService {
