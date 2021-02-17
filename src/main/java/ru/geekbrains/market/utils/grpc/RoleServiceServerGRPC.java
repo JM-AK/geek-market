@@ -2,26 +2,26 @@ package ru.geekbrains.market.utils.grpc;
 
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
+@Service
 public class RoleServiceServerGRPC {
 
     private static final Logger logger = Logger.getLogger(RoleServiceServerGRPC.class.getName());
 
-    private final int port;
+    private final int PORT_GRPC = 9089;
     private final Server server;
 
-    public RoleServiceServerGRPC(int port) {
-        this.port = port;
-        this.server = ServerBuilder.forPort(port).addService(new RoleServiceImplGRPC()).build();
+    public RoleServiceServerGRPC() {
+        this.server = ServerBuilder.forPort(PORT_GRPC).addService(new RoleServiceImplGRPC()).build();
     }
 
     public void start() throws IOException {
         server.start();
-        logger.info("Server started, listening on " + port);
+        logger.info("Server started, listening on " + PORT_GRPC);
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
             public void run() {
@@ -40,7 +40,7 @@ public class RoleServiceServerGRPC {
 
     private void stop() throws InterruptedException {
         if (server != null) {
-            server.shutdown().awaitTermination(30, TimeUnit.SECONDS);
+            server.shutdown().awaitTermination();
         }
     }
 

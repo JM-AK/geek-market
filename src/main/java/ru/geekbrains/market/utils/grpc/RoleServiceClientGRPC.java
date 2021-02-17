@@ -19,11 +19,13 @@ import java.util.logging.Logger;
 public class RoleServiceClientGRPC {
 
     private static final Logger logger = Logger.getLogger(RoleServiceClientGRPC.class.getName());
-
+    private final int PORT_GRPC = 9089;
+    private final String URL_GRPC = "localhost";
     private final RoleServiceGrpc.RoleServiceBlockingStub blockingStub;
+    private final ManagedChannel channel;
 
     public RoleServiceClientGRPC() {
-        ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 9089)
+        this.channel = ManagedChannelBuilder.forAddress(URL_GRPC, PORT_GRPC)
                 .usePlaintext()
                 .build();
         this.blockingStub = RoleServiceGrpc.newBlockingStub(channel);
@@ -43,6 +45,7 @@ public class RoleServiceClientGRPC {
         } catch (StatusRuntimeException e) {
             logger.warning("GRPC failed: {0}" + e.getStatus());
         }
+        channel.shutdown();
         return roleList;
     }
 
