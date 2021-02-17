@@ -39,7 +39,9 @@ public class RoleServiceImplGRPC extends RoleServiceGrpc.RoleServiceImplBase {
         }
         logger.info("User found: " + user.getUserName());
 
-        List<Role> roleList = new ArrayList<>(user.getRoles());
+//        List<Role> roleList = new ArrayList<>(user.getRoles());
+        List<Role> roleList = theUserService.loadUserRolesByUsername(userName);
+
         for (Role r : roleList) {
             responseObserver.onNext(RoleResponse.newBuilder().setRolename(r.getName()).build());
         }
