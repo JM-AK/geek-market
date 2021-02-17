@@ -13,7 +13,7 @@ function connect() {
     });
 }
 
-function sendName() {
+function sendContent() {
     var name = 'товар';
     stompClient.send("/app/hello_cart", {}, JSON.stringify({ 'name': name }));
 }

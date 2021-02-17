@@ -33,7 +33,7 @@
     <br>
     <a>Количество товара в корзине</a>
     <input id="resultCartQuantityInput" type="text" size="10" />
-    <input id="resultProductNameInput" type="text" size="10" />
+    <label id="resultProductNameInput" class="form-check-label" th:text="${#content}"/>
 
     <h1 th:text="Фильтры" />
 
@@ -79,7 +79,7 @@
             <td th:text="${p.title}"></td>
             <td th:text="${p.price}"></td>
             <td>
-                <a th:href="@{/cart/add/{product_id}(product_id = ${p.id})}" class="btn btn-primary" onclick="sendName()">Добавить в корзину</a>
+                <a th:href="@{/cart/add/{product_id}(product_id = ${p.id})}" class="btn btn-primary" onclick="sendContent()">Добавить в корзину</a>
             </td>
             <td sec:authorize="hasRole('ADMIN')">
                 <a class="btn btn-success" th:href="@{/catalog/edit/{id}(id = ${p.id})}" th:method="GET">
