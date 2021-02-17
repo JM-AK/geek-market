@@ -8,7 +8,7 @@ function connect() {
     stompClient.connect({}, function(frame) {
         console.log('Connected: ' + frame);
         stompClient.subscribe('/topic/add_product_to_catalog', function(greetingAddToCatalog){
-            showGreeting(JSON.parse(greeting.body).content);
+            showGreeting(JSON.parse(greetingAddToCatalog.body).content);
         });
     });
 }
