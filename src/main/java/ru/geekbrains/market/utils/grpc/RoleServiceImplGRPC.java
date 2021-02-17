@@ -1,8 +1,11 @@
-package ru.geekbrains.market.services.grpc;
+package ru.geekbrains.market.utils.grpc;
 
 import io.grpc.stub.StreamObserver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 import ru.geekbrains.market.RoleRequest;
 import ru.geekbrains.market.RoleResponse;
 import ru.geekbrains.market.RoleServiceGrpc;
@@ -12,9 +15,10 @@ import ru.geekbrains.market.services.UserServiceImpl;
 
 import java.util.Collection;
 
-
-public class RoleServiceGRPC extends RoleServiceGrpc.RoleServiceImplBase {
+@Service
+public class RoleServiceImplGRPC extends RoleServiceGrpc.RoleServiceImplBase {
     private UserServiceImpl userService;
+    private final Logger logger = LoggerFactory.getLogger(RoleServiceImplGRPC.class);
 
     @Autowired
     public void setUserService(UserServiceImpl userService) {
@@ -30,8 +34,9 @@ public class RoleServiceGRPC extends RoleServiceGrpc.RoleServiceImplBase {
         }
         Collection<Role> roles = user.getRoles();
         for (Role r : roles) {
-            responseObserver.onNext(RoleResponse.newBuilder().setId(r.getId()).setName(r.getName()).build());
+            responseObserver.onNext(RoleResponse.newBuilder().setRolename(r.getName()).build());
         }
         responseObserver.onCompleted();
     }
+
 }

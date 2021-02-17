@@ -9,8 +9,7 @@ message RoleRequest {
 }
 
 message RoleResponse {
-  int64 id = 1;
-  string name = 2;
+  string rolename = 1;
 }
 
 service RoleService {
