@@ -2,21 +2,24 @@ package ru.geekbrains.market.utils.grpc;
 
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.geekbrains.market.services.UserServiceImpl;
 
+import javax.persistence.Access;
 import java.io.IOException;
 import java.util.logging.Logger;
 
 @Service
 public class RoleServiceServerGRPC {
-
     private static final Logger logger = Logger.getLogger(RoleServiceServerGRPC.class.getName());
-
     private final int PORT_GRPC = 9089;
     private final Server server;
 
-    public RoleServiceServerGRPC() {
-        this.server = ServerBuilder.forPort(PORT_GRPC).addService(new RoleServiceImplGRPC()).build();
+    @Autowired
+    public RoleServiceServerGRPC(UserServiceImpl userService) {
+        RoleServiceImplGRPC roleServiceImplGRPC = new RoleServiceImplGRPC(userService);
+        this.server = ServerBuilder.forPort(PORT_GRPC).addService(roleServiceImplGRPC).build();
     }
 
     public void start() throws IOException {

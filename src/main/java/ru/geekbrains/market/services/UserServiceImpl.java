@@ -91,4 +91,8 @@ public class UserServiceImpl implements UserService {
                 ))
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
+
+    public List<Role> loadUserRolesByUsername(String userName) throws UsernameNotFoundException {
+        return userRepository.findOneByUserName(userName).get().getRoles().stream().collect(Collectors.toList());
+    }
 }

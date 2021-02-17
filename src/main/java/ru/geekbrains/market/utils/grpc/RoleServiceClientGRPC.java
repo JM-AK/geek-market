@@ -1,6 +1,5 @@
 package ru.geekbrains.market.utils.grpc;
 
-import io.grpc.Channel;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.StatusRuntimeException;
@@ -8,7 +7,6 @@ import org.springframework.stereotype.Service;
 import ru.geekbrains.market.RoleRequest;
 import ru.geekbrains.market.RoleResponse;
 import ru.geekbrains.market.RoleServiceGrpc;
-import ru.geekbrains.market.entities.Role;
 
 import java.util.ArrayList;
 import java.util.Iterator;

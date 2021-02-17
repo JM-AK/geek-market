@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ru.geekbrains.market.entities.Role;
 import ru.geekbrains.market.services.UserService;
 import ru.geekbrains.market.utils.grpc.RoleServiceClientGRPC;
+import ru.geekbrains.market.utils.grpc.RoleServiceImplGRPC;
 import ru.geekbrains.market.utils.grpc.RoleServiceServerGRPC;
 
 import java.io.IOException;
