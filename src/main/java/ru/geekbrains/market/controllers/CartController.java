@@ -30,7 +30,7 @@ import java.io.IOException;
 @AllArgsConstructor
 public class CartController {
     private ProductService productService;
-    private GreetingsWS controllerWs;
+    private GreetingsWS cartControllerWs;
 
     @Autowired
     public void setProductService(ProductService productService) {
@@ -38,8 +38,8 @@ public class CartController {
     }
 
     @Autowired
-    public void setControllerWs(GreetingsWS controllerWs) {
-        this.controllerWs = controllerWs;
+    public void setCartControllerWs(GreetingsWS cartControllerWs) {
+        this.cartControllerWs = cartControllerWs;
     }
 
     private static final Logger logger = LoggerFactory.getLogger(CartController.class);
@@ -60,7 +60,7 @@ public class CartController {
 
         String finalCount = String.valueOf(cart.getItems().size());
 //        logger.info(finalCount);
-        controllerWs.sendMessage("/topic/add_product_to_cart", new Greeting(finalCount));
+        cartControllerWs.sendMessage("/topic/add_product_to_cart", new Greeting(finalCount));
 
         return "redirect:" + referrer;
     }

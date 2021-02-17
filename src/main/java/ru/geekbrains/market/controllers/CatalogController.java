@@ -33,7 +33,7 @@ public class CatalogController {
     private ProductService productService;
     private CategoryService categoryService;
     private ImageSaverService imageSaverService;
-    private GreetingsWS controllerWS;
+    private GreetingsWS catalogControllerWS;
 
     private static final int PAGE_SIZE = 5;
 
@@ -55,8 +55,8 @@ public class CatalogController {
     }
 
     @Autowired
-    public void setControllerWS(GreetingsWS controllerWS) {
-        this.controllerWS = controllerWS;
+    public void setCatalogControllerWS(GreetingsWS catalogControllerWS) {
+        this.catalogControllerWS = catalogControllerWS;
     }
 
     @GetMapping
@@ -107,7 +107,7 @@ public class CatalogController {
             product.addImage(productImage);
         }
         if(product.getId().equals(0L)) {
-            controllerWS.sendMessage("/topic/add_product_to_catalog", new Greeting(product.getTitle()));
+            catalogControllerWS.sendMessage("/topic/add_product_to_catalog", new Greeting(product.getTitle()));
         }
         productService.save(product);
         return "redirect:/catalog";
