@@ -18,6 +18,7 @@ import ru.geekbrains.market.exceptions.NotFoundException;
 import ru.geekbrains.market.services.CategoryService;
 import ru.geekbrains.market.services.ImageSaverService;
 import ru.geekbrains.market.services.ProductService;
+import ru.geekbrains.market.utils.GreetingsWS;
 import ru.geekbrains.market.utils.ProductFilter;
 
 import java.io.NotActiveException;

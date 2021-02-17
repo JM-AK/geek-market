@@ -20,5 +20,5 @@ function sendName() {
 
 function showGreeting(message) {
     console.log(message);
-    document.getElementById("resultInput").value=message;
+    document.getElementById("resultCartQuantityInput").value=message;
 }

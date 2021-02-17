@@ -17,8 +17,7 @@ public class CatalogControllerWS implements GreetingsWS {
 
     @MessageMapping("/hello")
     @SendTo("/topic/greetings")
-    public Greeting greeting(Message message) throws Exception {
-        Thread.sleep(3000); // simulated delay
+    public Greeting greeting(Message message) {
         return new Greeting(message.getName() + " добавлен в коризну!");
     }
 
