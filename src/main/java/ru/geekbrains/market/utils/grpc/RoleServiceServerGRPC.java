@@ -37,8 +37,8 @@ public class RoleServiceServerGRPC {
         });
 
     }
-
-    private void stop() throws InterruptedException {
+    public void stop() throws InterruptedException {
+        logger.info("Server stop, listening on " + PORT_GRPC);
         if (server != null) {
             server.shutdown().awaitTermination();
         }

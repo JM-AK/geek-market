@@ -8,10 +8,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import ru.geekbrains.market.entities.Role;
 import ru.geekbrains.market.services.UserService;
 import ru.geekbrains.market.utils.grpc.RoleServiceClientGRPC;
+import ru.geekbrains.market.utils.grpc.RoleServiceServerGRPC;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -21,6 +24,7 @@ public class UserControllerGRPC {
     private static final Logger logger = LoggerFactory.getLogger(UserControllerGRPC.class);
     private UserService userService;
     private RoleServiceClientGRPC roleServiceClientGRPC;
+    private RoleServiceServerGRPC roleServiceServerGRPC;
 
     @Autowired
     public void setUserService(UserService userService) {
@@ -32,14 +36,23 @@ public class UserControllerGRPC {
         this.roleServiceClientGRPC = roleServiceClientGRPC;
     }
 
+    @Autowired
+    public void setRoleServiceServerGRPC(RoleServiceServerGRPC roleServiceServerGRPC) {
+        this.roleServiceServerGRPC = roleServiceServerGRPC;
+    }
 
-    @GetMapping("/{id}/id")
+    @GetMapping("/roles/{id}")
+    @ResponseBody
     public String getUserRoles(@PathVariable("id") Long id){
         String username = userService.findById(id).orElseThrow().getUserName();
         List<String> userRoles;
+
         try{
+            roleServiceServerGRPC.start();
             userRoles = roleServiceClientGRPC.getListRoleNameByUsername(username);
-        } catch (InterruptedException e) {
+
+        } catch (InterruptedException | IOException e) {
+            e.printStackTrace();
             throw new UsernameNotFoundException("User not found with id = " + id);
         }
         return userRoles.toString();
