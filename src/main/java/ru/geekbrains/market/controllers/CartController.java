@@ -30,7 +30,7 @@ import java.io.IOException;
 @AllArgsConstructor
 public class CartController {
     private ProductService productService;
-    private GreetingsWS cartControllerWs;
+    private CatalogControllerWS cartControllerWs;
 
     @Autowired
     public void setProductService(ProductService productService) {
@@ -38,7 +38,7 @@ public class CartController {
     }
 
     @Autowired
-    public void setCartControllerWs(GreetingsWS cartControllerWs) {
+    public void setCartControllerWs(CatalogControllerWS cartControllerWs) {
         this.cartControllerWs = cartControllerWs;
     }
 

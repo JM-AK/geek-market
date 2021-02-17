@@ -33,7 +33,7 @@ public class CatalogController {
     private ProductService productService;
     private CategoryService categoryService;
     private ImageSaverService imageSaverService;
-    private GreetingsWS catalogControllerWS;
+    private CatalogControllerWS catalogControllerWS;
 
     private static final int PAGE_SIZE = 5;
 
@@ -55,7 +55,7 @@ public class CatalogController {
     }
 
     @Autowired
-    public void setCatalogControllerWS(GreetingsWS catalogControllerWS) {
+    public void setCatalogControllerWS(CatalogControllerWS catalogControllerWS) {
         this.catalogControllerWS = catalogControllerWS;
     }
 

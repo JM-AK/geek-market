@@ -7,7 +7,7 @@ function connect() {
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function(frame) {
         console.log('Connected: ' + frame);
-        stompClient.subscribe('/topic/add_product_to_catalog', function(greeting){
+        stompClient.subscribe('/topic/add_product_to_catalog', function(greetingAddToCatalog){
             showGreeting(JSON.parse(greeting.body).content);
         });
     });
