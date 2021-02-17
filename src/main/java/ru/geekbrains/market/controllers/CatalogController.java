@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import ru.geekbrains.market.entities.Category;
 import ru.geekbrains.market.entities.Product;
 import ru.geekbrains.market.entities.ProductImage;
+import ru.geekbrains.market.entities.websocket.Greeting;
 import ru.geekbrains.market.exceptions.NotFoundException;
 import ru.geekbrains.market.services.CategoryService;
 import ru.geekbrains.market.services.ImageSaverService;
@@ -32,6 +33,7 @@ public class CatalogController {
     private ProductService productService;
     private CategoryService categoryService;
     private ImageSaverService imageSaverService;
+    private GreetingsWS controllerWS;
 
     private static final int PAGE_SIZE = 5;
 
@@ -50,6 +52,11 @@ public class CatalogController {
     @Autowired
     public void setImageSaverService(ImageSaverService imageSaverService) {
         this.imageSaverService = imageSaverService;
+    }
+
+    @Autowired
+    public void setControllerWS(GreetingsWS controllerWS) {
+        this.controllerWS = controllerWS;
     }
 
     @GetMapping
@@ -98,6 +105,9 @@ public class CatalogController {
             productImage.setPath(pathToSavedImage);
             productImage.setProduct(product);
             product.addImage(productImage);
+        }
+        if(product.getId().equals(0L)) {
+            controllerWS.sendMessage("/topic/add_product_to_catalog", new Greeting(product.getTitle()));
         }
         productService.save(product);
         return "redirect:/catalog";

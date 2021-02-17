@@ -7,7 +7,7 @@ function connect() {
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function(frame) {
         console.log('Connected: ' + frame);
-        stompClient.subscribe('/topic/add_product_to_cart', function(greeting){
+        stompClient.subscribe('/topic/add_product_to_catalog', function(greeting){
             showGreeting(JSON.parse(greeting.body).content);
         });
     });
@@ -20,5 +20,5 @@ function sendName() {
 
 function showGreeting(message) {
     console.log(message);
-    document.getElementById("resultCartQuantityInput").value=message;
+    document.getElementById("resultProductNameInput").value=message;
 }

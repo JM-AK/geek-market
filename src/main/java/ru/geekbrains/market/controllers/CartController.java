@@ -60,7 +60,7 @@ public class CartController {
 
         String finalCount = String.valueOf(cart.getItems().size());
 //        logger.info(finalCount);
-        controllerWs.sendMessage("/topic/greetings", new Greeting(finalCount));
+        controllerWs.sendMessage("/topic/add_product_to_cart", new Greeting(finalCount));
 
         return "redirect:" + referrer;
     }

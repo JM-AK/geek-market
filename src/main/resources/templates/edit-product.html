@@ -90,7 +90,7 @@
                         </div>
 
                         <div class="form-group">
-                            <button type="submit" name="addProduct" class="btn btn-primary btn-block">Сохранить</button>
+                            <button type="submit" name="addProduct" class="btn btn-primary btn-block" onclick="sendName()">Сохранить</button>
                         </div>
                     </form>
                 </article>
@@ -102,31 +102,3 @@
 </html>
 
 
-<!--<div class="container">-->
-<!--<div class="form-group">-->
-<!--<div class="col-xs-15">-->
-<!--<div th:if="${productCreationError != null}">-->
-<!--<div class="alert alert-danger col-xs-offset-1 col-xs-10">-->
-<!--<span th:text="${productCreationError}" />-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
-
-<!--<form th:action="@{/product/edit}" th:object="${product}" method="post">-->
-<!--<input hidden type="text" th:field="*{id}" class="form-control" id="productId">-->
-<!--<div class="error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}" />-->
-<!--<div class="form-group">-->
-<!--<label for="productTitle">Название</label>-->
-<!--<input type="text" th:field="*{title}" class="form-control" id="productTitle" placeholder="Введите название товара">-->
-<!--</div>-->
-<!--<div class="error" th:if="${#fields.hasErrors('price')}" th:errors="*{price}" />-->
-<!--<div class="form-group">-->
-<!--<label for="productPrice">Цена</label>-->
-<!--<input th:field="*{price}" type="number" class="form-control" id="productPrice" placeholder="Введите цену товара">-->
-<!--</div>-->
-<!--<button type="submit" class="btn btn-primary">Сохранить</button>-->
-<!--</form>-->
-<!--</div>-->
-<!--</body>-->
-<!--</html>-->

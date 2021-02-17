@@ -16,9 +16,15 @@ public class CatalogControllerWS implements GreetingsWS {
     private SimpMessagingTemplate simpMessagingTemplate;
 
     @MessageMapping("/hello")
-    @SendTo("/topic/greetings")
-    public Greeting greeting(Message message) {
+    @SendTo("/topic/add_product_to_cart")
+    public Greeting greetingAddToCart(Message message) {
         return new Greeting(message.getName() + " добавлен в коризну!");
+    }
+
+    @MessageMapping("/hello")
+    @SendTo("/topic/add_product_to_catalog")
+    public Greeting greetingAddToCatalog(Message message) {
+        return new Greeting(message.getName() + " добавлен в каталог!");
     }
 
     public void sendMessage(String destination, Greeting message) {
