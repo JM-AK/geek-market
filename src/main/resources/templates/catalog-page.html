@@ -20,7 +20,7 @@
 
     <script type="text/javascript" th:src="@{https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js}"></script>
     <script type="text/javascript" th:src="@{https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.2/sockjs.js}"></script>
-    <script type="text/javascript" th:src="@{/js/cart_add_notification.js}"></script>
+    <script type="text/javascript" th:src="@{/static/js/cart_add_notification.js}"></script>
 
     <meta name="ctx" th:content="${#httpServletRequest.getContextPath()}"/>
 </head>
@@ -30,10 +30,27 @@
 <div th:replace="~{navigation :: navi(Catalog)}"/>
 
 <div class="container">
-    <br>
-    <a>Количество товара в корзине</a>
-    <input id="resultCartQuantityInput" type="text" size="10" />
-    <label id="resultProductNameInput" class="form-check-label" th:text="${#content}"/>
+    <div class="row">
+        <div class="col-md-6">
+            <form class="form-inline">
+                <div class="form-group">
+                    <table id="conversation" class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>В корзине</th>
+                        </tr>
+                        </thead>
+                        <tbody id="cart_quantity">
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+        </div>
+
+        <!---
+        <label id="resultProductNameInput" class="form-check-label" th:text="${#content}"/>
+        --->
+    </div>
 
     <h1 th:text="Фильтры" />
 
@@ -79,7 +96,7 @@
             <td th:text="${p.title}"></td>
             <td th:text="${p.price}"></td>
             <td>
-                <a th:href="@{/cart/add/{product_id}(product_id = ${p.id})}" class="btn btn-primary" onclick="sendContent()">Добавить в корзину</a>
+                <a id="add_to_cart"  th:href="@{/catalog/cart/add/{product_id}(product_id = ${p.id})}" class="btn btn-primary" onclick="sendCartQuantity()">Добавить в корзину</a>
             </td>
             <td sec:authorize="hasRole('ADMIN')">
                 <a class="btn btn-success" th:href="@{/catalog/edit/{id}(id = ${p.id})}" th:method="GET">

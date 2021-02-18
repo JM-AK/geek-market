@@ -2,10 +2,22 @@ var stompClient = null;
 
 window.onload = connect();
 
+function setConnected(connected) {
+    if (connected) {
+        $("#conversation").show();
+    }
+    else {
+        $("#conversation").hide();
+    }
+    $("#cart_quantity").html("");
+}
+
+
 function connect() {
     var socket = new SockJS('/hello_cart');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function(frame) {
+        setConnected(true);
         console.log('Connected: ' + frame);
         stompClient.subscribe('/topic/add_product_to_cart', function(greetingAddToCart){
             showGreeting(JSON.parse(greetingAddToCart.body).content);
@@ -13,12 +25,17 @@ function connect() {
     });
 }
 
-function sendContent() {
-    var name = 'товар';
-    stompClient.send("/app/hello_cart", {}, JSON.stringify({ 'name': name }));
+function sendCartQuantity() {
+    var quantity = "cart_count";
+    stompClient.send("/app/hello_cart", {}, JSON.stringify({ 'name': quantity }));
 }
 
 function showGreeting(message) {
     console.log(message);
-    document.getElementById("resultCartQuantityInput").value=message;
+    document.getElementById("cart_quantity").value=message;
+    // $("#cart_quantity").append("<tr><td>" + message + "</td></tr>");
 }
+
+// $(function () {
+//     $("#add_to_cart").click(function() { sendCartQuantity(); });
+// });

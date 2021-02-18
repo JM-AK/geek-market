@@ -30,16 +30,10 @@ import java.io.IOException;
 @AllArgsConstructor
 public class CartController {
     private ProductService productService;
-    private CatalogControllerWS cartControllerWs;
 
     @Autowired
     public void setProductService(ProductService productService) {
         this.productService = productService;
-    }
-
-    @Autowired
-    public void setCartControllerWs(CatalogControllerWS cartControllerWs) {
-        this.cartControllerWs = cartControllerWs;
     }
 
     private static final Logger logger = LoggerFactory.getLogger(CartController.class);
@@ -49,20 +43,6 @@ public class CartController {
         Cart cart = getCurrentCart(session);
         model.addAttribute("cart", cart);
         return "cart-page";
-    }
-
-    @GetMapping("/add/{product_id}")
-    public String addToCart(@PathVariable(name = "product_id") Long productId, HttpServletRequest request) throws IOException {
-        Product p = productService.findById(productId).orElseThrow(() -> new NotFoundException());
-        Cart cart = getCurrentCart(request.getSession());
-        cart.add(p);
-        String referrer = request.getHeader("referer");
-
-        String finalCount = String.valueOf(cart.getItems().size());
-//        logger.info(finalCount);
-        cartControllerWs.sendMessage("/topic/add_product_to_cart", new Greeting(finalCount));
-
-        return "redirect:" + referrer;
     }
 
     @GetMapping("/inc/{product_id}")
