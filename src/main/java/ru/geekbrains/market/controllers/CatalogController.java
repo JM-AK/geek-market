@@ -142,14 +142,14 @@ public class CatalogController {
 
         String finalCount = String.valueOf(cart.getItems().size());
         model.addAttribute("cart_count",finalCount);
-        new Thread(()->{
-            try {
-                Thread.sleep(700);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            catalogControllerWS.sendMessage("/topic/add_product_to_cart", new Greeting(finalCount));
-        }).start();
+//        new Thread(()->{
+//            try {
+//                Thread.sleep(700);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            catalogControllerWS.sendMessage("/topic/add_product_to_cart", new Greeting(finalCount));
+//        }).start();
 
         String referrer = request.getHeader("referer");
         return "redirect:" + referrer;
