@@ -141,7 +141,7 @@ public class CatalogController {
         cart.add(p);
 
         String finalCount = String.valueOf(cart.getItems().size());
-        model.addAttribute("cart_count",finalCount);
+        model.addAttribute("cart_count", finalCount);
         new Thread(()->{
             try {
                 Thread.sleep(700);

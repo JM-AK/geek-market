@@ -26,7 +26,7 @@ function connect() {
 }
 
 function sendCartQuantity() {
-    var quantity = "cart_count";
+    var quantity = $.get('cart_count');
     stompClient.send("/app/hello_cart", {}, JSON.stringify({'name': quantity}));
 }
 
