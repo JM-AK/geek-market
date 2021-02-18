@@ -12,22 +12,16 @@ function setConversation(connected) {
     $("#shop_greetings").html("");
 }
 
-
 function connect() {
     var socket = new SockJS('/cart_websocket');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function(frame) {
         setConversation(true);
         console.log('Connected: ' + frame);
-        stompClient.subscribe('/topic/add_to_cart', function(greetingAddToCart){
-            showGreeting(JSON.parse(greetingAddToCart.body).content);
+        stompClient.subscribe('/topic/add_to_catalog', function(greetingAddToCatalog){
+            showGreeting(JSON.parse(greetingAddToCatalog.body).content);
         });
     });
-}
-
-function sendCartQuantity() {
-    var name = 'товар';
-    stompClient.send("/app/hello_cart", {}, JSON.stringify({'name': name}));
 }
 
 function showGreeting(message) {

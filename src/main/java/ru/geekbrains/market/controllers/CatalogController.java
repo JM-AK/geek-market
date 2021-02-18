@@ -111,7 +111,15 @@ public class CatalogController {
             product.addImage(productImage);
         }
         if(product.getId().equals(0L)) {
-            catalogControllerWS.sendMessage("/topic/add_product_to_catalog", new Greeting(product.getTitle()));
+            new Thread(()->{
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                catalogControllerWS.sendMessage("/topic/add_to_catalog",
+                        new Greeting("Добавлен новый товар: " + product.getTitle()));
+            }).start();
         }
         productService.save(product);
         return "redirect:/catalog";
@@ -147,7 +155,8 @@ public class CatalogController {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            catalogControllerWS.sendMessage("/topic/add_to_cart", new Greeting("В корзине товаров: " + finalCount));
+            catalogControllerWS.sendMessage("/topic/add_to_cart",
+                    new Greeting("В корзине товаров: " + finalCount));
         }).start();
 
         String referrer = request.getHeader("referer");

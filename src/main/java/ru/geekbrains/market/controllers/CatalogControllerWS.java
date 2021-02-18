@@ -28,11 +28,12 @@ public class CatalogControllerWS implements GreetingsWS {
     }
 
     @MessageMapping("/hello_catalog")
-    @SendTo("/topic/add_product_to_catalog")
+    @SendTo("/topic/add_to_catalog")
     public Greeting greetingAddToCatalog(Message message) {
         return new Greeting(HtmlUtils.htmlEscape(message.getName()) + " добавлен в каталог!");
     }
 
+    //метод для отправки сообщения на фронт с бэкэнда
     public void sendMessage(String destination, Greeting message) {
         logger.info(message.getContent());
         simpMessagingTemplate.convertAndSend(destination, message);
