@@ -9,7 +9,7 @@ function setConnected(connected) {
     else {
         $("#conversation").hide();
     }
-    $("#cart_quantity").html("");
+    $("#cart_quantity_greetings").html("");
 }
 
 
@@ -32,10 +32,6 @@ function sendCartQuantity() {
 
 function showGreeting(message) {
     console.log(message);
-    document.getElementById("cart_quantity").value=message;
-    // $("#cart_quantity").append("<tr><td>" + message + "</td></tr>");
+    document.getElementById("cart_quantity_greetings").innerText=message;
+    // $("#cart_quantity_greetings").append("<tr><td>" + message + "</td></tr>");
 }
-
-// $(function () {
-//     $("#add_to_cart").click(function() { sendCartQuantity(); });
-// });
