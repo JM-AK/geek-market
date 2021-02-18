@@ -51,16 +51,6 @@
         --->
     </div>
 
-    <div class="col-md-6">
-        <form class="form-inline">
-            <div class="form-group">
-                <label for="cadabra">What is your name?</label>
-                <input type="text" id="cadabra" class="form-control" placeholder="Your test here...">
-            </div>
-            <button id="send" class="btn btn-default" type="submit" onclick="sendCartQuantity()">Send</button>
-        </form>
-    </div>
-
     <h1 th:text="Фильтры" />
 
     <form th:action="@{/catalog}" method="get">
@@ -105,7 +95,7 @@
             <td th:text="${p.title}"></td>
             <td th:text="${p.price}"></td>
             <td>
-                <a id="add_to_cart"  th:href="@{/catalog/cart/add/{product_id}(product_id = ${p.id})}" class="btn btn-primary">Добавить в корзину</a>
+                <a id="add_to_cart"  th:href="@{/catalog/cart/add/{product_id}(product_id = ${p.id})}" class="btn btn-primary" onclick="sendCartQuantity()">Добавить в корзину</a>
             </td>
             <td sec:authorize="hasRole('ADMIN')">
                 <a class="btn btn-success" th:href="@{/catalog/edit/{id}(id = ${p.id})}" th:method="GET">
