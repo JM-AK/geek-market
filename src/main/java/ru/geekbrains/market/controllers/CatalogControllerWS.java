@@ -22,7 +22,7 @@ public class CatalogControllerWS implements GreetingsWS {
     @MessageMapping("/hello_cart")
     @SendTo("/topic/add_to_cart")
     public Greeting greetingAddToCart(Message message) throws InterruptedException {
-        Thread.sleep(1000);
+        Thread.sleep(500);
         logger.info(message.getName());
         return new Greeting(HtmlUtils.htmlEscape(message.getName()) + " добавлен в коризну!");
     }

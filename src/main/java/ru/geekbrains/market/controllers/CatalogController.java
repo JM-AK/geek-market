@@ -141,14 +141,13 @@ public class CatalogController {
         cart.add(p);
 
         String finalCount = String.valueOf(cart.getItems().size());
-        model.addAttribute("cart_count", finalCount);
         new Thread(()->{
             try {
-                Thread.sleep(700);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            catalogControllerWS.sendMessage("/topic/add_product_to_cart", new Greeting(finalCount));
+            catalogControllerWS.sendMessage("/topic/add_to_cart", new Greeting("В корзине товаров: " + finalCount));
         }).start();
 
         String referrer = request.getHeader("referer");
