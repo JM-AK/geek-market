@@ -30,19 +30,46 @@ import java.io.IOException;
 @AllArgsConstructor
 public class CartController {
     private ProductService productService;
+    private CatalogControllerWS catalogControllerWS;
+
+    private static final Logger logger = LoggerFactory.getLogger(CartController.class);
 
     @Autowired
     public void setProductService(ProductService productService) {
         this.productService = productService;
     }
 
-    private static final Logger logger = LoggerFactory.getLogger(CartController.class);
+    @Autowired
+    public void setCatalogControllerWS(CatalogControllerWS catalogControllerWS) {
+        this.catalogControllerWS = catalogControllerWS;
+    }
 
     @GetMapping
     public String showCartPage(HttpSession session, Model model) {
         Cart cart = getCurrentCart(session);
         model.addAttribute("cart", cart);
         return "cart-page";
+    }
+
+    @GetMapping("/add/{product_id}")
+    public String addProduct(@PathVariable(name = "product_id") Long productId, HttpServletRequest request, Model model) throws IOException, InterruptedException {
+        Product p = productService.findById(productId).orElseThrow(() -> new NotFoundException());
+        Cart cart = getCurrentCart(request.getSession());
+        cart.add(p);
+
+        String finalCount = String.valueOf(cart.getItems().size());
+        new Thread(()->{
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            catalogControllerWS.sendMessage("/topic/add_to_cart",
+                    new Greeting("В корзине товаров: " + finalCount));
+        }).start();
+
+        String referrer = request.getHeader("referer");
+        return "redirect:" + referrer;
     }
 
     @GetMapping("/inc/{product_id}")

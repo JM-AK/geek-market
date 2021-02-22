@@ -58,11 +58,6 @@ public class CatalogController {
         this.imageSaverService = imageSaverService;
     }
 
-    @Autowired
-    public void setCatalogControllerWS(CatalogControllerWS catalogControllerWS) {
-        this.catalogControllerWS = catalogControllerWS;
-    }
-
     @GetMapping
     public String catalogPage(Model model,
                            @RequestParam(value = "page") Optional<Integer> page,
@@ -140,36 +135,6 @@ public class CatalogController {
     @DeleteMapping
     public void deleteAll(){
         productService.deleteAll();
-    }
-
-    @GetMapping("/cart/add/{product_id}")
-    public String addToCart(@PathVariable(name = "product_id") Long productId, HttpServletRequest request, Model model) throws IOException, InterruptedException {
-        Product p = productService.findById(productId).orElseThrow(() -> new NotFoundException());
-        Cart cart = getCurrentCart(request.getSession());
-        cart.add(p);
-
-        String finalCount = String.valueOf(cart.getItems().size());
-        new Thread(()->{
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            catalogControllerWS.sendMessage("/topic/add_to_cart",
-                    new Greeting("В корзине товаров: " + finalCount));
-        }).start();
-
-        String referrer = request.getHeader("referer");
-        return "redirect:" + referrer;
-    }
-
-    public Cart getCurrentCart(HttpSession session) {
-        Cart cart = (Cart) session.getAttribute("cart");
-        if (cart == null) {
-            cart = new Cart();
-            session.setAttribute("cart", cart);
-        }
-        return cart;
     }
 
     @ExceptionHandler
