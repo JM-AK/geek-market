@@ -14,12 +14,18 @@ import org.springframework.web.servlet.ModelAndView;
 import ru.geekbrains.market.entities.Category;
 import ru.geekbrains.market.entities.Product;
 import ru.geekbrains.market.entities.ProductImage;
+import ru.geekbrains.market.entities.websocket.Greeting;
 import ru.geekbrains.market.exceptions.NotFoundException;
 import ru.geekbrains.market.services.CategoryService;
 import ru.geekbrains.market.services.ImageSaverService;
 import ru.geekbrains.market.services.ProductService;
+import ru.geekbrains.market.utils.Cart;
+import ru.geekbrains.market.utils.GreetingsWS;
 import ru.geekbrains.market.utils.ProductFilter;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.io.NotActiveException;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +37,7 @@ public class CatalogController {
     private ProductService productService;
     private CategoryService categoryService;
     private ImageSaverService imageSaverService;
+    private CatalogControllerWS catalogControllerWS;
 
     private static final int PAGE_SIZE = 5;
 
@@ -49,6 +56,11 @@ public class CatalogController {
     @Autowired
     public void setImageSaverService(ImageSaverService imageSaverService) {
         this.imageSaverService = imageSaverService;
+    }
+
+    @Autowired
+    public void setCatalogControllerWS(CatalogControllerWS catalogControllerWS) {
+        this.catalogControllerWS = catalogControllerWS;
     }
 
     @GetMapping
@@ -98,6 +110,17 @@ public class CatalogController {
             productImage.setProduct(product);
             product.addImage(productImage);
         }
+        if(product.getId().equals(0L)) {
+            new Thread(()->{
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                catalogControllerWS.sendMessage("/topic/add_to_catalog",
+                        new Greeting("Добавлен новый товар: " + product.getTitle()));
+            }).start();
+        }
         productService.save(product);
         return "redirect:/catalog";
     }
@@ -117,6 +140,36 @@ public class CatalogController {
     @DeleteMapping
     public void deleteAll(){
         productService.deleteAll();
+    }
+
+    @GetMapping("/cart/add/{product_id}")
+    public String addToCart(@PathVariable(name = "product_id") Long productId, HttpServletRequest request, Model model) throws IOException, InterruptedException {
+        Product p = productService.findById(productId).orElseThrow(() -> new NotFoundException());
+        Cart cart = getCurrentCart(request.getSession());
+        cart.add(p);
+
+        String finalCount = String.valueOf(cart.getItems().size());
+        new Thread(()->{
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            catalogControllerWS.sendMessage("/topic/add_to_cart",
+                    new Greeting("В корзине товаров: " + finalCount));
+        }).start();
+
+        String referrer = request.getHeader("referer");
+        return "redirect:" + referrer;
+    }
+
+    public Cart getCurrentCart(HttpSession session) {
+        Cart cart = (Cart) session.getAttribute("cart");
+        if (cart == null) {
+            cart = new Cart();
+            session.setAttribute("cart", cart);
+        }
+        return cart;
     }
 
     @ExceptionHandler
