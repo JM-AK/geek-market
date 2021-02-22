@@ -39,6 +39,9 @@ public class CartLoggingAspect {
     @After("afterAddInCartClass() || afterRemoveInCartClass() || afterIncrementInCartClass() || afterDecrementInCartClass() || afterSetQInCartClass()")
     public void afterModifyInCartItemsInCartClass(JoinPoint jp) {
         logger.info(jp.toString());
+        Cart theCart = (Cart) jp.getThis();
+        theCart.recalculate();
+        logger.info("Сумма корзины: " + theCart.getTotalPrice());
     }
 
     @Before("execution (public * ru.geekbrains.market.*.CartController.*Product*(..))")
