@@ -20,15 +20,8 @@ public class CartLoggingAspect {
     }
 
     //логирование работы с корзиной
-    @After("execution (public * ru.geekbrains.market.*.CartController.*Product(..))")
+    @After("execution (public * ru.geekbrains.market.*.CartController.*Product*(..))")
     public void afterModifyInCartControllerClass(JoinPoint jp) {
-        MethodSignature ms = (MethodSignature) jp.getSignature();
-        logger.info(ms.toString());
-    }
-
-    //логирование метода добавления товара в корзину
-    @After("execution (public * ru.geekbrains.market.*.CatalogController.*Cart(..))")
-    public void afterModifyInCatalogControllerClassAddToCart(JoinPoint jp) {
         MethodSignature ms = (MethodSignature) jp.getSignature();
         logger.info(ms.toString());
     }
