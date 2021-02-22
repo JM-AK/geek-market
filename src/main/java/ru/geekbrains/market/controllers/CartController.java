@@ -50,15 +50,14 @@ public class CartController {
     }
 
     @GetMapping
-    public String showCartPage(HttpSession session, Model model) {
-        model.addAttribute("theCart", cart);
+    public String showCartPage(Model model) {
+        model.addAttribute("cart", cart);
         return "cart-page";
     }
 
     @GetMapping("/add/{product_id}")
-    public String addProduct(@PathVariable(name = "product_id") Long productId, HttpServletRequest request, Model model) throws IOException, InterruptedException {
+    public String addProduct(@PathVariable(name = "product_id") Long productId, HttpServletRequest request) throws IOException, InterruptedException {
         Product p = productService.findById(productId).orElseThrow(() -> new NotFoundException());
-//        Cart cart = getCurrentCart(request.getSession());
         cart.add(p);
 
         String finalCount = String.valueOf(cart.getItems().size());
@@ -77,35 +76,29 @@ public class CartController {
     }
 
     @GetMapping("/inc/{product_id}")
-    public String incrementProduct(@PathVariable(name = "product_id") Long productId, HttpSession session) {
-//        Cart cart = getCurrentCart(session);
+    public String incrementProduct(@PathVariable(name = "product_id") Long productId) {
         cart.increment(productId);
         return "redirect:/cart";
     }
 
     @GetMapping("/dec/{product_id}")
-    public String decrementProduct(@PathVariable(name = "product_id") Long productId, HttpSession session) {
-//        Cart cart = getCurrentCart(session);
+    public String decrementProduct(@PathVariable(name = "product_id") Long productId) {
         cart.decrement(productId);
         return "redirect:/cart";
     }
 
     //ToDo fix address
     @GetMapping("/set/{product_id}")
-    public String setProductQuantity(Model model,
-                                     @RequestParam(name = "product_id") Long productId,
-                                     @RequestParam(name = "product_quantity") Long quantity,
-                                     HttpSession session) {
+    public String setProductQuantity(@RequestParam(name = "product_id") Long productId,
+                                     @RequestParam(name = "product_quantity") Long quantity) {
         Product p = productService.findById(productId).orElseThrow(
                 () -> new NotFoundException());
-//        Cart cart = getCurrentCart(session);
         cart.setQuantity(p,quantity);
         return "redirect:/cart";
     }
 
     @GetMapping("/remove/{product_id}")
-    public String removeProduct(@PathVariable(name = "product_id") Long productId, HttpSession session) {
-//        Cart cart = getCurrentCart(session);
+    public String removeProduct(@PathVariable(name = "product_id") Long productId) {
         cart.remove(productId);
         return "redirect:/cart";
     }

@@ -25,11 +25,11 @@
     <br>
     <h1>Корзина</h1>
 
-    <div th:unless="${theCart.getItems().size() > 0}" >
+    <div th:unless="${cart.getItems().size() > 0}" >
         <span>Ваша корзина пуста</span>
     </div>
 
-    <div th:if="${theCart.getItems().size() > 0}" >
+    <div th:if="${cart.getItems().size() > 0}" >
         <table class="table table-hover">
             <thead class="thead-dark">
             <tr>
@@ -41,7 +41,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="cartItem, itrStat : ${theCart.getItems()}">
+            <tr th:each="cartItem, itrStat : ${cart.getItems()}">
                 <td th:text="${itrStat.index + 1}"/>
                 <td th:text="${cartItem.product.title}"/>
                 <td th:text="${cartItem.itemPrice}"/>
@@ -56,13 +56,13 @@
             <tr>
                 <td/><td/><td/>
                 <td>Итого заказ:</td>
-                <td th:text="${theCart.totalPrice}"/>
+                <td th:text="${cart.totalPrice}"/>
             </tr>
             </tbody>
         </table>
         <br>
 
-        <a sec:authorize="isAuthenticated()" type="button" class="btn btn-primary" th:href="@{/order/fill}" th:if="${theCart.items.size() > 0}">Оформить заказ</a>
+        <a sec:authorize="isAuthenticated()" type="button" class="btn btn-primary" th:href="@{/order/fill}" th:if="${cart.items.size() > 0}">Оформить заказ</a>
         <a sec:authorize="isAnonymous()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#authWarningModal">Оформить заказ</a>
 
     </div>
