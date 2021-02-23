@@ -5,8 +5,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CreationTimestamp;
+import ru.geekbrains.market.utils.Cart;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,5 +63,18 @@ public class Order {
     @JsonIgnore
     @Transient
     private boolean confirmed;
+
+    public Order(User user, Cart cart, String phoneNumber, String address) {
+        this.user = user;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.orderItems = new ArrayList<>();
+        for (OrderItem oi : cart.getItems()) {
+            oi.setOrder(this);
+            this.orderItems.add(oi);
+        }
+        this.price = new BigDecimal(cart.getPrice().doubleValue());
+        cart.clear();
+    }
 
 }

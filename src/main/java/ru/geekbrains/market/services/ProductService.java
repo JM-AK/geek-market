@@ -67,4 +67,8 @@ public class ProductService {
         return productRepository.existsById(id);
     }
 
+    public List<ProductDto> findAllDtos() {
+        return productRepository.findAllBy();
+    }
+
 }
