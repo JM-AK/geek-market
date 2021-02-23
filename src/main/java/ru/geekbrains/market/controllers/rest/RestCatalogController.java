@@ -1,4 +1,4 @@
-package ru.geekbrains.market.controllers;
+package ru.geekbrains.market.controllers.rest;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

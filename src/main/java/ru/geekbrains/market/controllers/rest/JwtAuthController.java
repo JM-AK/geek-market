@@ -1,4 +1,4 @@
-package ru.geekbrains.market.controllers;
+package ru.geekbrains.market.controllers.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
