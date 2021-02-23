@@ -46,7 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Configuration
-    @Order(1)
+    @Order(2)
     public class UiWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
 
         @Override
@@ -55,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/register/**").permitAll()
                     .antMatchers("/admin/**").hasRole("ADMIN")
                     .antMatchers("/products/**").hasRole("ADMIN")
-                    .antMatchers("/shop/order/**").authenticated()
+                    .antMatchers("/orders/**").authenticated()
                     .antMatchers("/profile/**").authenticated()
                     .and()
                     .formLogin()
@@ -71,14 +71,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Configuration
-    @Order(2)
+    @Order(1)
     public class JwtWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http.csrf().disable()
                     .authorizeRequests()
-                    .antMatchers("/api/v2/**").authenticated()
+                    .antMatchers("/api/v1/**").authenticated()
                     .anyRequest().permitAll()
                     .and()
                     .httpBasic()

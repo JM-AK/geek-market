@@ -18,12 +18,12 @@ import java.util.List;
 @CrossOrigin("*")
 @RequestMapping("/api/v1/catalog")
 @Api("Set of endpoints for CRUD operations for Products")
-public class RestProductsController {
+public class RestCatalogController {
     private ProductService productService;
 
     @Autowired
-    public RestProductsController(ProductService productsService) {
-        this.productService = productsService;
+    public void setProductService(ProductService productService) {
+        this.productService = productService;
     }
 
     @GetMapping(produces = "application/json")
@@ -34,9 +34,6 @@ public class RestProductsController {
 
     @GetMapping(value = "/{id}", produces = "application/json")
     @ApiOperation("Returns one product by id")
-//    @ApiImplicitParams(value = {
-//            @ApiImplicitParam(name = "demo", type = "String", required = false, paramType = "query")
-//    })
     public ResponseEntity<?> getOneProduct(@PathVariable @ApiParam("Id of the product to be requested. Cannot be empty") Long id) {
         if (!productService.existsById(id)) {
             throw new ProductNotFoundException("Product not found, id: " + id);
@@ -52,7 +49,7 @@ public class RestProductsController {
 
     @DeleteMapping("/{id}")
     @ApiOperation("Removes one product by id")
-    public void deleteOneProducts(@PathVariable Long id) {
+    public void deleteOneProduct(@PathVariable Long id) {
         productService.deleteById(id);
     }
 

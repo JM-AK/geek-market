@@ -1,5 +1,6 @@
 package ru.geekbrains.market.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -52,6 +53,7 @@ public class Product {
     private List<Category> categories;
 
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "product")
+    @JsonIgnore
     private List<ProductImage> images;
 
     @Column(name = "create_at", nullable=false, updatable = false )
@@ -63,6 +65,7 @@ public class Product {
     private LocalDateTime updateAt;
 
     @OneToMany(mappedBy = "product")
+    @JsonIgnore
     private List<OrderItem> orderItems;
 
     public void addImage(ProductImage productImage) {
