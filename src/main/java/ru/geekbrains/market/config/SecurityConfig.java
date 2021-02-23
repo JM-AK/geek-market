@@ -16,8 +16,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import ru.geekbrains.market.services.UserService;
 
-import javax.servlet.http.HttpServletResponse;
-
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
@@ -72,28 +70,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         }
     }
 
-    @Configuration
-    @Order(3)
-    public class RestWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
-
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            http.csrf().disable()
-                    .authorizeRequests()
-                    .antMatchers("/api/v1/**").authenticated()
-                    .anyRequest().permitAll()
-                    .and()
-                    .httpBasic()
-                    .authenticationEntryPoint((req, resp, exception) -> {
-                        resp.setContentType("application/json");
-                        resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                        resp.setCharacterEncoding("UTF-8");
-                        resp.getWriter().println("{ \"error\": \"" + exception.getMessage() + "\" }");
-                    })
-                    .and()
-                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        }
-    }
     @Configuration
     @Order(2)
     public class JwtWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
