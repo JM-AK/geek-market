@@ -8,8 +8,8 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.util.HtmlUtils;
-import ru.geekbrains.market.entities.websocket.Greeting;
-import ru.geekbrains.market.entities.websocket.Message;
+import ru.geekbrains.market.entities.dto.websocket.Greeting;
+import ru.geekbrains.market.entities.dto.websocket.Message;
 import ru.geekbrains.market.utils.GreetingsWS;
 
 @Controller
