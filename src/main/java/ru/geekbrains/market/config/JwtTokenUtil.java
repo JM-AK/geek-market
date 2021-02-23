@@ -26,18 +26,18 @@ public class JwtTokenUtil {
         return getClaimFromToken(token, Claims::getSubject);
     }
 
-    private Date getExpirationDateFromToken(String token) {
-        return getClaimFromToken(token, Claims::getExpiration);
-    }
+//    private Date getExpirationDateFromToken(String token) {
+//        return getClaimFromToken(token, Claims::getExpiration);
+//    }
 
-    public boolean validateToken(String token) {
-        return !isTokenExpired(token);
-    }
+//    public boolean validateToken(String token) {
+//        return !isTokenExpired(token);
+//    }
 
-    public boolean validateToken(String token, UserDetails userDetails) {
-        String username = getUsernameFromToken(token);
-        return Objects.equals(username, userDetails.getUsername()) && !isTokenExpired(token);
-    }
+//    public boolean validateToken(String token, UserDetails userDetails) {
+//        String username = getUsernameFromToken(token);
+//        return Objects.equals(username, userDetails.getUsername()) && !isTokenExpired(token);
+//    }
 
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
@@ -68,8 +68,8 @@ public class JwtTokenUtil {
                 .getBody();
     }
 
-    private boolean isTokenExpired(String token) {
-        Date date = getExpirationDateFromToken(token);
-        return date != null && date.before(new Date());
-    }
+//    private boolean isTokenExpired(String token) {
+//        Date date = getExpirationDateFromToken(token);
+//        return date != null && date.before(new Date());
+//    }
 }

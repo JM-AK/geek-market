@@ -3,6 +3,7 @@ package ru.geekbrains.market.config;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-@NoArgsConstructor
+@Slf4j
 public class JwtRequestFilter extends OncePerRequestFilter {
     private UserService userService;
     private JwtTokenUtil jwtTokenUtil;
@@ -47,8 +48,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             try {
                 username = jwtTokenUtil.getUsernameFromToken(jwt);
             } catch (ExpiredJwtException e) {
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "{ msg: The token is expired }");
-                return;
+                log.debug("The token is expired");
+//                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "{ msg: The token is expired }");
+//                return;
             }
         }
 
