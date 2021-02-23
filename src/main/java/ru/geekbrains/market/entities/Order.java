@@ -64,17 +64,17 @@ public class Order {
     @Transient
     private boolean confirmed;
 
-    public Order(User user, Cart cart, String phoneNumber, String address) {
+    public Order(User user, Cart cart, String phoneNumber) {
         this.user = user;
         this.phoneNumber = phoneNumber;
-        this.address = address;
+        this.deliveryAddress = deliveryAddress;
         this.orderItems = new ArrayList<>();
         for (OrderItem oi : cart.getItems()) {
             oi.setOrder(this);
             this.orderItems.add(oi);
         }
-        this.price = new BigDecimal(cart.getPrice().doubleValue());
-        cart.clear();
+        this.price = cart.getTotalPrice();
+//        cart.clear();
     }
 
 }

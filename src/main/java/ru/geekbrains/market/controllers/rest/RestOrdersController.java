@@ -27,7 +27,7 @@ public class RestOrdersController {
     @ResponseStatus(HttpStatus.OK)
     public void confirmOrder(Principal principal, @RequestParam String address) {
         User user = usersService.findByUserName(principal.getName()).get();
-        Order order = new Order(user, cart, user.getUserName(), address);
+        Order order = new Order(user, cart, user.getUserName());
         order = ordersService.saveOrder(order);
     }
 }
