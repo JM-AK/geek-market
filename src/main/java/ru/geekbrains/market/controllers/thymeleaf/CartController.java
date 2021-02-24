@@ -13,7 +13,7 @@ import ru.geekbrains.market.entities.Product;
 import ru.geekbrains.market.entities.dto.websocket.Greeting;
 import ru.geekbrains.market.exceptions.NotFoundException;
 import ru.geekbrains.market.services.ProductService;
-import ru.geekbrains.market.utils.Cart;
+import ru.geekbrains.market.beans.Cart;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;

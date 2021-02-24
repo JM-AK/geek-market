@@ -1,4 +1,4 @@
-angular.module('app').controller('booksController', function ($scope, $http) {
+angular.module('app').controller('catalogController', function ($scope, $http) {
     const contextPath = 'http://localhost:8181/shop';
 
     fillTable = function () {

@@ -1,8 +1,9 @@
-package ru.geekbrains.market.config;
+package ru.geekbrains.market.config.restjs;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,6 +20,7 @@ import java.io.IOException;
 
 @Component
 @Slf4j
+@Profile("restjs")
 public class JwtRequestFilter extends OncePerRequestFilter {
     private UserService userService;
     private JwtTokenUtil jwtTokenUtil;

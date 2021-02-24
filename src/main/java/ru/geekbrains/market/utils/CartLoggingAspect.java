@@ -7,6 +7,7 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
+import ru.geekbrains.market.beans.Cart;
 
 import java.util.logging.Logger;
 
@@ -15,23 +16,23 @@ import java.util.logging.Logger;
 public class CartLoggingAspect {
     private Logger logger = Logger.getLogger(CartLoggingAspect.class.getName());
 
-    @Pointcut("execution (public * ru.geekbrains.market.utils.Cart.add(..))")
+    @Pointcut("execution (public * ru.geekbrains.market.beans.Cart.add(..))")
     public void afterAddInCartClass() {
     }
 
-    @Pointcut("execution (public * ru.geekbrains.market.utils.Cart.remove(..))")
+    @Pointcut("execution (public * ru.geekbrains.market.beans.Cart.remove(..))")
     public void afterRemoveInCartClass() {
     }
 
-    @Pointcut("execution (public * ru.geekbrains.market.utils.Cart.increment(..))")
+    @Pointcut("execution (public * ru.geekbrains.market.beans.Cart.increment(..))")
     public void afterIncrementInCartClass() {
     }
 
-    @Pointcut("execution (public * ru.geekbrains.market.utils.Cart.increment(..))")
+    @Pointcut("execution (public * ru.geekbrains.market.beans.Cart.increment(..))")
     public void afterDecrementInCartClass() {
     }
 
-    @Pointcut("execution (public * ru.geekbrains.market.utils.Cart.setQuantity(..))")
+    @Pointcut("execution (public * ru.geekbrains.market.beans.Cart.setQuantity(..))")
     public void afterSetQInCartClass() {
     }
 

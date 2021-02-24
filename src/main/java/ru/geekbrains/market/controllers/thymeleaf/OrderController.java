@@ -1,6 +1,5 @@
 package ru.geekbrains.market.controllers.thymeleaf;
 
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Controller;
@@ -12,7 +11,7 @@ import ru.geekbrains.market.entities.User;
 import ru.geekbrains.market.services.DeliveryAddressService;
 import ru.geekbrains.market.services.OrderService;
 import ru.geekbrains.market.services.UserService;
-import ru.geekbrains.market.utils.Cart;
+import ru.geekbrains.market.beans.Cart;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;

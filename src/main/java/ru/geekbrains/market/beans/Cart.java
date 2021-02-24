@@ -1,4 +1,4 @@
-package ru.geekbrains.market.utils;
+package ru.geekbrains.market.beans;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

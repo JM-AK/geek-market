@@ -1,4 +1,4 @@
-package ru.geekbrains.market.controllers.rest;
+package ru.geekbrains.market.controllers.restjs;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -18,7 +18,7 @@ import java.util.List;
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/api/v1/catalog")
-@Profile("js")
+@Profile("restjs")
 @Api("Set of endpoints for CRUD operations for Products")
 public class RestCatalogController {
     private ProductService productService;

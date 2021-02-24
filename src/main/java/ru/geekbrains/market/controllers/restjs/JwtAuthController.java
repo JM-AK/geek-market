@@ -1,4 +1,4 @@
-package ru.geekbrains.market.controllers.rest;
+package ru.geekbrains.market.controllers.restjs;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
@@ -11,14 +11,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import ru.geekbrains.market.config.JwtTokenUtil;
+import ru.geekbrains.market.config.restjs.JwtTokenUtil;
 import ru.geekbrains.market.entities.dto.jwt.JwtRequest;
 import ru.geekbrains.market.entities.dto.jwt.JwtResponse;
 import ru.geekbrains.market.exceptions.GeekMarketError;
 import ru.geekbrains.market.services.UserService;
 
 @RestController
-@Profile("js")
+@Profile("restjs")
 public class JwtAuthController {
     private UserService usersService;
     private JwtTokenUtil jwtTokenUtil;

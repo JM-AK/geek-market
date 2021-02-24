@@ -1,4 +1,4 @@
-package ru.geekbrains.market.controllers.rest;
+package ru.geekbrains.market.controllers.restjs;
 
 
 import lombok.AllArgsConstructor;
@@ -12,14 +12,14 @@ import ru.geekbrains.market.entities.Product;
 import ru.geekbrains.market.entities.dto.OrderItemDto;
 import ru.geekbrains.market.services.OrderItemService;
 import ru.geekbrains.market.services.ProductService;
-import ru.geekbrains.market.utils.Cart;
+import ru.geekbrains.market.beans.Cart;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/cart")
 @AllArgsConstructor
-@Profile("js")
+@Profile("restjs")
 public class RestCartController {
     private OrderItemService orderItemService;
     private ProductService productService;
