@@ -1,5 +1,6 @@
 package ru.geekbrains.market.controllers.restjs;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
@@ -19,23 +20,17 @@ import ru.geekbrains.market.services.UserService;
 
 @RestController
 @Profile("restjs")
+@Slf4j
 public class JwtAuthController {
     private UserService usersService;
     private JwtTokenUtil jwtTokenUtil;
     private AuthenticationManager authenticationManager;
 
-    @Autowired
-    public void setUsersService(UserService usersService) {
+    public JwtAuthController(UserService usersService,
+                          JwtTokenUtil jwtTokenUtil,
+                          AuthenticationManager authenticationManager) {
         this.usersService = usersService;
-    }
-
-    @Autowired
-    public void setJwtTokenUtil(JwtTokenUtil jwtTokenUtil) {
         this.jwtTokenUtil = jwtTokenUtil;
-    }
-
-    @Autowired
-    public void setAuthenticationManager(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
     }
 
@@ -43,11 +38,13 @@ public class JwtAuthController {
     public ResponseEntity<?> createAuthToken(@RequestBody JwtRequest authRequest) throws Exception {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
+        log.info(authRequest.getUsername() + " " + authRequest.getPassword());
         } catch (BadCredentialsException ex) {
             return new ResponseEntity<>(new GeekMarketError(HttpStatus.UNAUTHORIZED.value(), "Incorrect username or password"), HttpStatus.UNAUTHORIZED);
         }
         UserDetails userDetails = usersService.loadUserByUsername(authRequest.getUsername());
         String token = jwtTokenUtil.generateToken(userDetails);
+        log.info(token);
         return ResponseEntity.ok(new JwtResponse(token));
     }
 

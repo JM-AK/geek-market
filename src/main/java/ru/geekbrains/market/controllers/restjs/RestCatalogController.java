@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.market.entities.Product;
+import ru.geekbrains.market.entities.dto.ProductDto;
 import ru.geekbrains.market.exceptions.ProductNotFoundException;
 import ru.geekbrains.market.services.ProductService;
 
@@ -30,8 +31,8 @@ public class RestCatalogController {
 
     @GetMapping(produces = "application/json")
     @ApiOperation("Returns list of all products")
-    public List<Product> getAllProducts() {
-        return productService.findAll();
+    public List<ProductDto> getAllProducts() {
+        return productService.findAllDtos();
     }
 
     @GetMapping(value = "/{id}", produces = "application/json")
