@@ -14,20 +14,29 @@ import ru.geekbrains.market.services.UserService;
 import ru.geekbrains.market.utils.Cart;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 
 @Controller
 @RequestMapping("/api/v1/orders")
 @AllArgsConstructor
 public class RestOrdersController {
-    private UserService usersService;
-    private OrderService ordersService;
+    private UserService userService;
+    private OrderService orderService;
     private Cart cart;
 
     @PostMapping("/confirm")
     @ResponseStatus(HttpStatus.OK)
-    public void confirmOrder(Principal principal, @RequestParam String address) {
-        User user = usersService.findByUserName(principal.getName()).get();
-        Order order = new Order(user, cart, user.getUserName());
-        order = ordersService.saveOrder(order);
+    public void confirmOrder(Principal principal, @RequestParam String address, @RequestParam String phone) {
+        User user = userService.findByUserName(principal.getName()).get();
+        Order order = orderService.makeOrder(cart, user);
+
+        order.setDeliveryAddress();
+        order.setPhoneNumber(phone);
+
+        order.setDeliveryDate(LocalDateTime.now().plusDays(7));
+        order.setDeliveryPrice(0.0);
+        order = orderService.saveOrder(order);
+
+
     }
 }

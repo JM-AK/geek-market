@@ -64,7 +64,7 @@ public class Order {
     @Transient
     private boolean confirmed;
 
-    public Order(User user, Cart cart, String phoneNumber) {
+    public Order(User user, Cart cart, String phoneNumber, DeliveryAddress deliveryAddress) {
         this.user = user;
         this.phoneNumber = phoneNumber;
         this.deliveryAddress = deliveryAddress;
@@ -74,7 +74,7 @@ public class Order {
             this.orderItems.add(oi);
         }
         this.price = cart.getTotalPrice();
-//        cart.clear();
+        cart.clear();
     }
 
 }

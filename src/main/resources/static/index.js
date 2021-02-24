@@ -16,7 +16,7 @@
                 templateUrl: 'auth/auth.html',
                 controller: 'authController'
             })
-            .when('/products', {
+            .when('/catalog', {
                 templateUrl: 'catalog/catalog.html',
                 controller: 'catalogController'
             })
