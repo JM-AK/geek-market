@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import ru.geekbrains.market.entities.Order;
 import ru.geekbrains.market.entities.User;
+import ru.geekbrains.market.services.DeliveryAddressService;
 import ru.geekbrains.market.services.OrderService;
 import ru.geekbrains.market.services.UserService;
 import ru.geekbrains.market.utils.Cart;
@@ -22,6 +23,7 @@ import java.time.LocalDateTime;
 public class RestOrdersController {
     private UserService userService;
     private OrderService orderService;
+    private DeliveryAddressService deliveryAddressService;
     private Cart cart;
 
     @PostMapping("/confirm")
@@ -30,13 +32,11 @@ public class RestOrdersController {
         User user = userService.findByUserName(principal.getName()).get();
         Order order = orderService.makeOrder(cart, user);
 
-        order.setDeliveryAddress();
+        order.setDeliveryAddress(deliveryAddressService.getUserAddressOrCreateOne(user.getId(), address));
         order.setPhoneNumber(phone);
-
         order.setDeliveryDate(LocalDateTime.now().plusDays(7));
         order.setDeliveryPrice(0.0);
+
         order = orderService.saveOrder(order);
-
-
     }
 }
