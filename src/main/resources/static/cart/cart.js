@@ -1,5 +1,5 @@
 angular.module('app').controller('cartController', function ($scope, $http, $location) {
-    const contextPath = 'http://localhost:8181';
+    const contextPath = 'http://localhost:8181/shop';
 
     fillTable = function () {
         $http.get(contextPath + '/api/v1/cart')

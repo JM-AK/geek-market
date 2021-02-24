@@ -1,5 +1,5 @@
 angular.module('app').controller('booksController', function ($scope, $http) {
-    const contextPath = 'http://localhost:8181';
+    const contextPath = 'http://localhost:8181/shop';
 
     fillTable = function () {
         $http.get(contextPath + '/api/v1/catalog')
