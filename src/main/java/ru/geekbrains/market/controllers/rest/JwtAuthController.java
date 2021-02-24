@@ -1,6 +1,7 @@
 package ru.geekbrains.market.controllers.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,6 +18,7 @@ import ru.geekbrains.market.exceptions.GeekMarketError;
 import ru.geekbrains.market.services.UserService;
 
 @RestController
+@Profile("js")
 public class JwtAuthController {
     private UserService usersService;
     private JwtTokenUtil jwtTokenUtil;

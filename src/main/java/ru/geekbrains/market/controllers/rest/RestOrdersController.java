@@ -1,6 +1,7 @@
 package ru.geekbrains.market.controllers.rest;
 
 import lombok.AllArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +20,7 @@ import java.time.LocalDateTime;
 
 @Controller
 @RequestMapping("/api/v1/orders")
+@Profile("js")
 @AllArgsConstructor
 public class RestOrdersController {
     private UserService userService;

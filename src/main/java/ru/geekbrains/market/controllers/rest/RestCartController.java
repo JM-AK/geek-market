@@ -2,6 +2,7 @@ package ru.geekbrains.market.controllers.rest;
 
 
 import lombok.AllArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/cart")
 @AllArgsConstructor
+@Profile("js")
 public class RestCartController {
     private OrderItemService orderItemService;
     private ProductService productService;

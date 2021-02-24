@@ -1,6 +1,7 @@
-package ru.geekbrains.market.controllers;
+package ru.geekbrains.market.controllers.thymeleaf;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
+@Profile("thymeleaf")
 public class AdminController {
     private OrderService orderService;
 
