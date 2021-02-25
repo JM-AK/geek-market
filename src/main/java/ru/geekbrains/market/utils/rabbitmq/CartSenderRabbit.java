@@ -5,14 +5,14 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.geekbrains.market.entities.dto.ProductDto;
+import ru.geekbrains.market.entities.Product;
 
 @Service
 @Slf4j
 public class CartSenderRabbit {
     private final static String QUEUE_NAME_PREFIX = "add_to_cart_product";
 
-    public void sendProductDto(ProductDto productDto) throws Exception {
+    public void sendProduct(Product product) throws Exception {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("localhost");
         try (
@@ -20,8 +20,8 @@ public class CartSenderRabbit {
                 Channel channel = connection.createChannel()) {
             channel.queueDeclare(QUEUE_NAME_PREFIX, false, false, false, null);
 
-            channel.basicPublish("", QUEUE_NAME_PREFIX, null, productDto.toString().getBytes());
-            log.info("sent " + productDto.toString());
+            channel.basicPublish("", QUEUE_NAME_PREFIX, null, product.toString().getBytes());
+            log.info("sent " + product.toString());
         }
     }
 }

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class CartReceiverRabbit {
     private final static String QUEUE_NAME_PREFIX = "add_to_cart_product";
 
-    public void receiveProductDto () throws Exception {
+    public void receiveProduct() throws Exception {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("localhost");
         Connection connection = factory.newConnection();

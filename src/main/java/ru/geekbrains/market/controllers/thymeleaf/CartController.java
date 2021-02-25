@@ -14,6 +14,7 @@ import ru.geekbrains.market.entities.dto.websocket.Greeting;
 import ru.geekbrains.market.exceptions.NotFoundException;
 import ru.geekbrains.market.services.ProductService;
 import ru.geekbrains.market.beans.Cart;
+import ru.geekbrains.market.utils.rabbitmq.CartSenderRabbit;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -30,6 +31,7 @@ public class CartController {
     private ProductService productService;
     private CatalogControllerWS catalogControllerWS;
     private Cart cart;
+    private CartSenderRabbit cartSenderRabbit;
 
     private static final Logger logger = LoggerFactory.getLogger(CartController.class);
 
@@ -41,6 +43,11 @@ public class CartController {
     @Autowired
     public void setCatalogControllerWS(CatalogControllerWS catalogControllerWS) {
         this.catalogControllerWS = catalogControllerWS;
+    }
+
+    @Autowired
+    public void setCartSenderRabbit(CartSenderRabbit cartSenderRabbit) {
+        this.cartSenderRabbit = cartSenderRabbit;
     }
 
     @Autowired
@@ -69,6 +76,12 @@ public class CartController {
             catalogControllerWS.sendMessage("/topic/add_to_cart",
                     new Greeting("В корзине товаров: " + finalCount));
         }).start();
+
+        try {
+            cartSenderRabbit.sendProduct(p);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         String referrer = request.getHeader("referer");
         return "redirect:" + referrer;
