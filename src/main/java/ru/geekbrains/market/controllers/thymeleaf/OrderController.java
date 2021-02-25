@@ -59,15 +59,15 @@ public class OrderController {
         if (principal == null) {
             return "redirect:/login";
         }
-        User user = userService.findByUserName(principal.getName()).get();
-        Cart cart = (Cart) httpServletRequest.getSession().getAttribute("cart");
-        Order order = orderService.makeOrder(cart, user);
-
         try {
             cartReceiverRabbit.receiveProduct();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        User user = userService.findByUserName(principal.getName()).get();
+        Cart cart = (Cart) httpServletRequest.getSession().getAttribute("cart");
+        Order order = orderService.makeOrder(cart, user);
+
         List<DeliveryAddress> deliveryAddresses = deliverAddressService.getUserAddresses(user.getId());
         model.addAttribute("order", order);
         model.addAttribute("deliveryAddresses", deliveryAddresses);

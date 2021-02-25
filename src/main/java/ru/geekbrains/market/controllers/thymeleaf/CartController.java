@@ -17,6 +17,7 @@ import ru.geekbrains.market.beans.Cart;
 import ru.geekbrains.market.utils.rabbitmq.CartSenderRabbit;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 
@@ -56,7 +57,8 @@ public class CartController {
     }
 
     @GetMapping
-    public String showCartPage(Model model) {
+    public String showCartPage(Model model, HttpSession session) {
+        this.cart = getCurrentCart(session);
         model.addAttribute("cart", cart);
         return "cart-page";
     }
@@ -122,14 +124,14 @@ public class CartController {
         return modelAndView;
     }
 
-//    public Cart getCurrentCart(HttpSession session) {
-//        Cart cart = (Cart) session.getAttribute("cart");
-//        if (cart == null) {
-//            cart = new Cart();
-//            session.setAttribute("cart", cart);
-//        }
-//        return cart;
-//    }
+    public Cart getCurrentCart(HttpSession session) {
+        Cart cart = (Cart) session.getAttribute("cart");
+        if (cart == null) {
+            cart = new Cart();
+            session.setAttribute("cart", cart);
+        }
+        return cart;
+    }
 
 
 }
