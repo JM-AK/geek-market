@@ -38,13 +38,11 @@ public class JwtAuthController {
     public ResponseEntity<?> createAuthToken(@RequestBody JwtRequest authRequest) throws Exception {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
-        log.info(authRequest.getUsername() + " " + authRequest.getPassword());
         } catch (BadCredentialsException ex) {
             return new ResponseEntity<>(new GeekMarketError(HttpStatus.UNAUTHORIZED.value(), "Incorrect username or password"), HttpStatus.UNAUTHORIZED);
         }
         UserDetails userDetails = usersService.loadUserByUsername(authRequest.getUsername());
         String token = jwtTokenUtil.generateToken(userDetails);
-        log.info(token);
         return ResponseEntity.ok(new JwtResponse(token));
     }
 

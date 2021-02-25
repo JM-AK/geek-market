@@ -43,20 +43,23 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String jwt = null;
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             jwt = authHeader.substring(7);
-            // Здесь происходит валидация токена и будет брошено MalformedJwtException
+            log.info( "1 - " + jwt);
             try {
                 username = jwtTokenUtil.getUsernameFromToken(jwt);
-            } catch (ExpiredJwtException e) {
+                log.info("1 - " + username);
+            } catch (ExpiredJwtException e){
                 log.debug("The token is expired");
-//                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "{ msg: The token is expired }");
-//                return;
+                e.printStackTrace();
             }
         }
-
+        log.info("next step after 1");
+        log.info("check username" + username);
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userService.loadUserByUsername(username);
+            log.info("2 - " + userDetails.getUsername());
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             token.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            log.info("2 - " + token.toString());
             SecurityContextHolder.getContext().setAuthentication(token);
         }
 
