@@ -14,8 +14,10 @@ import ru.geekbrains.market.entities.dto.websocket.Greeting;
 import ru.geekbrains.market.exceptions.NotFoundException;
 import ru.geekbrains.market.services.ProductService;
 import ru.geekbrains.market.beans.Cart;
+import ru.geekbrains.market.utils.rabbitmq.CartSenderRabbit;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 
@@ -30,6 +32,7 @@ public class CartController {
     private ProductService productService;
     private CatalogControllerWS catalogControllerWS;
     private Cart cart;
+    private CartSenderRabbit cartSenderRabbit;
 
     private static final Logger logger = LoggerFactory.getLogger(CartController.class);
 
@@ -44,12 +47,18 @@ public class CartController {
     }
 
     @Autowired
+    public void setCartSenderRabbit(CartSenderRabbit cartSenderRabbit) {
+        this.cartSenderRabbit = cartSenderRabbit;
+    }
+
+    @Autowired
     public void setCart(Cart cart) {
         this.cart = cart;
     }
 
     @GetMapping
-    public String showCartPage(Model model) {
+    public String showCartPage(Model model, HttpSession session) {
+        this.cart = getCurrentCart(session);
         model.addAttribute("cart", cart);
         return "cart-page";
     }
@@ -69,6 +78,12 @@ public class CartController {
             catalogControllerWS.sendMessage("/topic/add_to_cart",
                     new Greeting("В корзине товаров: " + finalCount));
         }).start();
+
+        try {
+            cartSenderRabbit.sendProduct(p);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         String referrer = request.getHeader("referer");
         return "redirect:" + referrer;
@@ -109,14 +124,14 @@ public class CartController {
         return modelAndView;
     }
 
-//    public Cart getCurrentCart(HttpSession session) {
-//        Cart cart = (Cart) session.getAttribute("cart");
-//        if (cart == null) {
-//            cart = new Cart();
-//            session.setAttribute("cart", cart);
-//        }
-//        return cart;
-//    }
+    public Cart getCurrentCart(HttpSession session) {
+        Cart cart = (Cart) session.getAttribute("cart");
+        if (cart == null) {
+            cart = new Cart();
+            session.setAttribute("cart", cart);
+        }
+        return cart;
+    }
 
 
 }
