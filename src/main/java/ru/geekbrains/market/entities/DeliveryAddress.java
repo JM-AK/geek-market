@@ -19,4 +19,7 @@ public class DeliveryAddress {
 
     @Column(name = "address")
     private String address;
+
+    public DeliveryAddress(Long userId, String address) {
+    }
 }

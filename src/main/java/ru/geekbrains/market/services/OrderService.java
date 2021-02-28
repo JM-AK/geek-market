@@ -6,7 +6,7 @@ import ru.geekbrains.market.entities.Order;
 import ru.geekbrains.market.entities.OrderItem;
 import ru.geekbrains.market.entities.User;
 import ru.geekbrains.market.repositories.OrderRepository;
-import ru.geekbrains.market.utils.Cart;
+import ru.geekbrains.market.beans.Cart;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;

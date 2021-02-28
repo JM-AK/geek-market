@@ -1,4 +1,4 @@
-package ru.geekbrains.market.utils;
+package ru.geekbrains.market.beans;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -110,5 +110,9 @@ public class Cart {
         return items.stream().filter(o -> o.getProduct().getId().equals(p.getId())).findFirst().orElse(null);
     }
 
+    public void clear() {
+        items.clear();
+        recalculate();
+    }
 
 }

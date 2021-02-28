@@ -1,8 +1,9 @@
-package ru.geekbrains.market.controllers;
+package ru.geekbrains.market.controllers.thymeleaf;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import ru.geekbrains.market.entities.Category;
 import ru.geekbrains.market.entities.Product;
 import ru.geekbrains.market.entities.ProductImage;
+import ru.geekbrains.market.entities.dto.websocket.Greeting;
 import ru.geekbrains.market.exceptions.NotFoundException;
 import ru.geekbrains.market.services.CategoryService;
 import ru.geekbrains.market.services.ImageSaverService;
@@ -27,10 +29,12 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/catalog")
+@Profile("thymeleaf")
 public class CatalogController {
     private ProductService productService;
     private CategoryService categoryService;
     private ImageSaverService imageSaverService;
+    private CatalogControllerWS catalogControllerWS;
 
     private static final int PAGE_SIZE = 5;
 
@@ -97,6 +101,17 @@ public class CatalogController {
             productImage.setPath(pathToSavedImage);
             productImage.setProduct(product);
             product.addImage(productImage);
+        }
+        if(product.getId().equals(0L)) {
+            new Thread(()->{
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                catalogControllerWS.sendMessage("/topic/add_to_catalog",
+                        new Greeting("Добавлен новый товар: " + product.getTitle()));
+            }).start();
         }
         productService.save(product);
         return "redirect:/catalog";
