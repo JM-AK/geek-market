@@ -68,7 +68,7 @@
             <br>
             <br>
             <div class="col-sm-6 controls">
-                <!--<a class="btn btn-primary" th:href="@{'/shop/order/result/' + ${order.id}}">Оплатить</a>-->
+                <a class="btn btn-primary" th:href="@{/orders/order/result/{id}(id=${order.id})}">Подтвердить</a>
               <!--
                 <a class="btn btn-primary" th:href="@{'/paypal/buy'}">Оплатить</a>
               -->

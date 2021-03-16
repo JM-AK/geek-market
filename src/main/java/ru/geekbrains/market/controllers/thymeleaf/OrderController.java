@@ -88,6 +88,7 @@ public class OrderController {
         order.setDeliveryPrice(0.0);
         order = orderService.saveOrder(order);
         model.addAttribute("order", order);
+
         return "order-filler";
     }
 

@@ -36,7 +36,9 @@ public class OrderService {
     }
 
     public Order saveOrder(Order order){
-        return orderRepository.save(order);
+        Order orderOut = orderRepository.save(order);
+        orderOut.setConfirmed(true);
+        return orderOut;
     }
 
     @Transactional
