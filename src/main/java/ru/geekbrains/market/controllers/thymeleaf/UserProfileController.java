@@ -14,7 +14,6 @@ import ru.geekbrains.market.entities.Order;
 import ru.geekbrains.market.entities.SystemUser;
 import ru.geekbrains.market.entities.User;
 import ru.geekbrains.market.services.OrderService;
-import ru.geekbrains.market.services.UserService;
 import ru.geekbrains.market.services.UserServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +24,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/profile")
 @Profile("thymeleaf")
-public class ProfileController {
+public class UserProfileController {
     private UserServiceImpl userService;
     private OrderService orderService;
 
@@ -39,7 +38,7 @@ public class ProfileController {
         this.orderService = orderService;
     }
 
-    private final Logger logger = LoggerFactory.getLogger(ProfileController.class);
+    private final Logger logger = LoggerFactory.getLogger(UserProfileController.class);
 
     @InitBinder
     public void initBinder(WebDataBinder dataBinder) {
@@ -47,18 +46,19 @@ public class ProfileController {
         dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
     }
 
-    @GetMapping("/edit/{id}")
-    public String updateUserDetails (@PathVariable("id") Long id, Model model, HttpServletRequest httpServletRequest, Principal principal){
-        User user = userService.findById(id).get();
-        List<Order> orders = orderService.findByUserId(id);
+    @GetMapping()
+    public String updateUserDetails (Model model, Principal principal){
+        User user = userService.findByUserName(principal.getName()).get();
 
-        model.addAttribute("user", user);
+        List<Order> orders = orderService.findByUserId(user.getId());
+
+        model.addAttribute("systemUser", user);
         model.addAttribute("orders", orders);
         return "profile-page";
     }
 
-    @PostMapping("/edit/{user_id}")
-    public String updateUserDetails(@Valid @ModelAttribute("systemUser") User userDTO, BindingResult theBindingResult, Model theModel) {
+    @PostMapping("/edit")
+    public String updateUserDetails(@Valid @ModelAttribute("systemUser") User userDTO, BindingResult theBindingResult) {
         String userName = userDTO.getUserName();
         if (theBindingResult.hasErrors()) {
             return "profile-page";
