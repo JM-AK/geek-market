@@ -47,7 +47,7 @@ public class UserProfileController {
     }
 
     @GetMapping()
-    public String updateUserDetails (Model model, Principal principal){
+    public String getProfile (Model model, Principal principal){
         User user = userService.findByUserName(principal.getName()).get();
 
         List<Order> orders = orderService.findByUserId(user.getId());
@@ -57,18 +57,10 @@ public class UserProfileController {
         return "profile-page";
     }
 
-    @PostMapping("/edit")
-    public String updateUserDetails(@Valid @ModelAttribute("systemUser") User userDTO, BindingResult theBindingResult) {
-        String userName = userDTO.getUserName();
-        if (theBindingResult.hasErrors()) {
-            return "profile-page";
-        }
-
-        User user = userService.findByUserName(userName).get();
-        user.setEmail(userDTO.getEmail());
-        user.setPassword(userDTO.getPassword());
-        userService.update(user);
-        logger.debug("Successfully updated user: " + userName);
-        return "profile-page";
+    @GetMapping("/orders/info/{id}")
+    public String orderInfo(@PathVariable("id") Long id, Model model) throws Exception {
+        Order order = orderService.findById(id);
+        model.addAttribute("order", order);
+        return "order-info-page";
     }
 }

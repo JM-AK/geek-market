@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
@@ -46,7 +46,8 @@
         </tfoot>
     </table>
 
-    <a type="button" class="btn btn-primary" th:href="@{/admin/orders}">Назад</a>
+    <a sec:authorize="hasRole('ADMIN')" type="button" class="btn btn-primary" th:href="@{/admin/orders}">К заказам</a>
+    <a type="button" class="btn btn-primary" th:href="@{/profile}">К профилю</a>
 
 </div>
 </body>
