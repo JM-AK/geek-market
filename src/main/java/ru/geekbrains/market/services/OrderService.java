@@ -35,6 +35,10 @@ public class OrderService {
         return orderRepository.findById(id).get();
     }
 
+    public List<Order> findByUserId (Long userId) {
+        return orderRepository.findByUserId(userId);
+    }
+
     public Order saveOrder(Order order){
         Order orderOut = orderRepository.save(order);
         orderOut.setConfirmed(true);
@@ -59,4 +63,5 @@ public class OrderService {
         order.setStatus(orderStatusService.getStatusById(statusId));
         saveOrder(order);
     }
+
 }
