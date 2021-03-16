@@ -29,6 +29,7 @@
             <th>Статус заказа</th>
             <th>Дата формирования</th>
             <th>Действия</th>
+            <th>Информация о заказе</th>
         </tr>
         </thead>
         <tbody>
@@ -41,7 +42,9 @@
             </td>
             <td th:text="${order.createAt}"/>
             <td>
-                <a th:if="${order.status.id == 1}" th:href="@{'/admin/orders/ready/' + ${order.id}}" >Заказ отправлен</a>
+                <a th:if="${order.status.id == 1}" th:href="@{'/admin/orders/ready/' + ${order.id}}" >Отправить</a>
+            </td>
+            <td>
                 <a th:href="@{'/admin/orders/info/' + ${order.id}}" >Информация</a>
             </td>
         </tr>
