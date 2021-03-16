@@ -51,6 +51,4 @@ public class AdminController {
         return "order-info-page";
     }
 
-
-
 }
