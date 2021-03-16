@@ -44,5 +44,13 @@ public class AdminController {
         response.sendRedirect(request.getHeader("referer"));
     }
 
+    @GetMapping("/orders/info/{id}")
+    public String orderInfo(@PathVariable("id") Long id, Model model) throws Exception {
+        Order order = orderService.findById(id);
+        model.addAttribute("order", order);
+        return "order-info-page";
+    }
+
+
 
 }
