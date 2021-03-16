@@ -1,5 +1,7 @@
 package ru.geekbrains.market.controllers.thymeleaf;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Controller;
@@ -27,6 +29,8 @@ public class OrderController {
     private DeliveryAddressService deliverAddressService;
     private UserService userService;
     private CartReceiverRabbit cartReceiverRabbit;
+
+    private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
 
     @Autowired
     public void setUserService(UserService userService) {

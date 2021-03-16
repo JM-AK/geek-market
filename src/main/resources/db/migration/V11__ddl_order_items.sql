@@ -1,8 +1,8 @@
 SET FOREIGN_KEY_CHECKS = 0;
 
-DROP TABLE IF EXISTS orders_item;
+DROP TABLE IF EXISTS order_items;
 
-CREATE TABLE orders_item
+CREATE TABLE order_items
 (
     id          INT(11)       NOT NULL AUTO_INCREMENT,
     product_id  INT(11)       NOT NULL,
