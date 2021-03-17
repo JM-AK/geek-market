@@ -8,6 +8,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.market.entities.Product;
+import ru.geekbrains.market.entities.dto.ProductDto;
 import ru.geekbrains.market.repositories.ProductRepository;
 
 import java.util.List;
@@ -61,4 +62,13 @@ public class ProductService {
     public Optional<Product> findByTitle(String title) {
         return productRepository.findOneByTitle(title);
     }
+
+    public boolean existsById(Long id) {
+        return productRepository.existsById(id);
+    }
+
+    public List<ProductDto> findAllDtos() {
+        return productRepository.findAllBy();
+    }
+
 }

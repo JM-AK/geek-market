@@ -2,4 +2,5 @@ SET FOREIGN_KEY_CHECKS = 1;
 INSERT INTO roles (name)
 VALUES ('ROLE_EMPLOYEE'),
        ('ROLE_MANAGER'),
-       ('ROLE_ADMIN');
+       ('ROLE_ADMIN'),
+       ('ROLE_USER');

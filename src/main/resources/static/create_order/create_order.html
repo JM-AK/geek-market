@@ -1,0 +1,19 @@
+<div>
+    <h1>Итоговый заказ:</h1>
+    <table class="table table-hover" cellpadding="0" cellspacing="0">
+        <tr>
+            <td>Название</td>
+            <td>Цена</td>
+            <td>Количество</td>
+        </tr>
+        <tbody>
+        <tr ng-repeat="orderItemDto in CartList">
+            <td>{{orderItemDto.productTitle}}</td>
+            <td>{{orderItemDto.price}}</td>
+            <td>{{orderItemDto.quantity}}</td>
+        </tr>
+        </tbody>
+    </table>
+    <input placeholder="Адрес доставки" ng-model="userinfo.address">
+    <button class="btn btn-primary"  ng-click="confirmOrder()">Подтвердить</button>
+</div>

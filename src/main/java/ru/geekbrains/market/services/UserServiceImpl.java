@@ -6,6 +6,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.geekbrains.market.entities.Role;
@@ -24,7 +25,7 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     private RoleRepository roleRepository;
-    private BCryptPasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
@@ -37,7 +38,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Autowired
-    public void setPasswordEncoder(BCryptPasswordEncoder passwordEncoder) {
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -59,9 +60,10 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public boolean save(SystemUser systemUser) {
         User user = new User();
-        if (findByUserName(systemUser.getUserName()) != null) {
-            return false;
-        }
+        findByUserName(systemUser.getUserName()).ifPresent((u) -> {
+            throw new RuntimeException("User with phone " + systemUser.getUserName() + " is already exist");
+        }) ;
+
         user.setUserName(systemUser.getUserName());
         user.setPassword(passwordEncoder.encode(systemUser.getPassword()));
         user.setFirstName(systemUser.getFirstName());
@@ -80,20 +82,26 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        return userRepository.findOneByUserName(userName)
-                .map(user -> new org.springframework.security.core.userdetails.User(
-                        user.getUserName(),
-                        user.getPassword(),
-                        user.getRoles().stream()
-                                .map(role -> new SimpleGrantedAuthority(role.getName()))
-                                .collect(Collectors.toList())
-                ))
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findOneByUserName(username).orElseThrow(() -> new UsernameNotFoundException("Invalid username or password"));
+        return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(),
+                mapRolesToAuthorities(user.getRoles()));
     }
 
     @Transactional
-    public List<Role> loadUserRolesByUsername(String userName) throws UsernameNotFoundException {
-        return userRepository.findOneByUserName(userName).get().getRoles().stream().collect(Collectors.toList());
+    public List<Role> loadUserRolesByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findOneByUserName(username).get().getRoles().stream().collect(Collectors.toList());
+    }
+
+    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
+        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public boolean update(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setEmail(user.getEmail());
+        userRepository.save(user);
+        return true;
     }
 }

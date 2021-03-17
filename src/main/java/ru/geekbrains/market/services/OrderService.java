@@ -6,7 +6,7 @@ import ru.geekbrains.market.entities.Order;
 import ru.geekbrains.market.entities.OrderItem;
 import ru.geekbrains.market.entities.User;
 import ru.geekbrains.market.repositories.OrderRepository;
-import ru.geekbrains.market.utils.Cart;
+import ru.geekbrains.market.beans.Cart;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -35,8 +35,14 @@ public class OrderService {
         return orderRepository.findById(id).get();
     }
 
+    public List<Order> findByUserId (Long userId) {
+        return orderRepository.findByUserId(userId);
+    }
+
     public Order saveOrder(Order order){
-        return orderRepository.save(order);
+        Order orderOut = orderRepository.save(order);
+        orderOut.setConfirmed(true);
+        return orderOut;
     }
 
     @Transactional
@@ -57,4 +63,5 @@ public class OrderService {
         order.setStatus(orderStatusService.getStatusById(statusId));
         saveOrder(order);
     }
+
 }

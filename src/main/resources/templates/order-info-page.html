@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+
+<body>
+<div class="container">
+    <br>
+    <h1 th:text="${'Заказ №' + order.id}"></h1>
+    <p th:text="${'Имя пользователя: ' + order.user.lastName}"></p>
+    <p>
+        <span th:text="${'Email: ' + order.user.email + '; Тел.: ' + order.getPhoneNumber()}"> </span>
+    </p>
+    <p th:text="${'Срок доставки: ' + order.getDeliveryDate()}"></p>
+    <p th:text="${'Адрес: ' + order.deliveryAddress}"></p>
+
+    <br>
+    <table style="border-collapse: collapse;">
+        <caption style="font-weight: bold; margin-bottom: 20px">Состав заказа</caption>
+        <thead>
+        <tr style="background-color: #bee5eb;">
+            <th style="padding: 20px; text-align: center;">Название товара</th>
+            <th style="padding: 20px; text-align: center;">Количество</th>
+            <th style="padding: 20px; text-align: center;">Стоимость</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="orderItem, iterStat : ${order.orderItems}">
+            <td style="border-top: 1px solid #dee2e6; padding: 20px; text-align: center;"
+                th:styleappend="${iterStat.odd} ? 'background-color: rgba(0,0,0,.075);'"
+                th:text="${orderItem.product.title}"/>
+            <td style="border-top: 1px solid #dee2e6; padding: 20px; text-align: center;"
+                th:styleappend="${iterStat.odd} ? 'background-color: rgba(0,0,0,.075);'"
+                th:text="${orderItem.quantity}"/>
+            <td style="border-top: 1px solid #dee2e6; padding: 20px; text-align: center;"
+                th:styleappend="${iterStat.odd} ? 'background-color: rgba(0,0,0,.075);'"
+                th:text="${orderItem.totalPrice}"/>
+        </tr>
+        </tbody>
+        <tfoot>
+        <td style="padding: 20px; font-style: italic;">Итоговая сумма:</td>
+        <td style="padding: 20px; font-style: italic;"></td>
+        <td style="padding: 20px; font-style: italic;" th:utext="'<b>' + ${order.price}+ '</b>'"></td>
+        </tfoot>
+    </table>
+
+    <a sec:authorize="hasRole('ADMIN')" type="button" class="btn btn-primary" th:href="@{/admin/orders}">К заказам</a>
+    <a type="button" class="btn btn-primary" th:href="@{/profile}">К профилю</a>
+
+</div>
+</body>
+</html>

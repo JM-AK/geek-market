@@ -62,7 +62,7 @@
         </table>
         <br>
 
-        <a sec:authorize="isAuthenticated()" type="button" class="btn btn-primary" th:href="@{/order/fill}" th:if="${@cart.items.size() > 0}">Оформить заказ</a>
+        <a sec:authorize="isAuthenticated()" type="button" class="btn btn-primary" th:href="@{orders/order/fill}" th:if="${cart.items.size() > 0}">Оформить заказ</a>
         <a sec:authorize="isAnonymous()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#authWarningModal">Оформить заказ</a>
 
     </div>
