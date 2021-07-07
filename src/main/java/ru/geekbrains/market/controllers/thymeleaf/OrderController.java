@@ -1,5 +1,7 @@
 package ru.geekbrains.market.controllers.thymeleaf;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Controller;
@@ -9,6 +11,7 @@ import ru.geekbrains.market.entities.DeliveryAddress;
 import ru.geekbrains.market.entities.Order;
 import ru.geekbrains.market.entities.User;
 import ru.geekbrains.market.services.DeliveryAddressService;
+import ru.geekbrains.market.services.MailService;
 import ru.geekbrains.market.services.OrderService;
 import ru.geekbrains.market.services.UserService;
 import ru.geekbrains.market.beans.Cart;
@@ -27,6 +30,9 @@ public class OrderController {
     private DeliveryAddressService deliverAddressService;
     private UserService userService;
     private CartReceiverRabbit cartReceiverRabbit;
+    private MailService mailService;
+
+    private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
 
     @Autowired
     public void setUserService(UserService userService) {
@@ -46,6 +52,11 @@ public class OrderController {
     @Autowired
     public void setCartReceiverRabbit(CartReceiverRabbit cartReceiverRabbit) {
         this.cartReceiverRabbit = cartReceiverRabbit;
+    }
+
+    @Autowired
+    public void setMailService(MailService mailService) {
+        this.mailService = mailService;
     }
 
     @GetMapping
@@ -88,6 +99,7 @@ public class OrderController {
         order.setDeliveryPrice(0.0);
         order = orderService.saveOrder(order);
         model.addAttribute("order", order);
+
         return "order-filler";
     }
 
@@ -102,7 +114,7 @@ public class OrderController {
         if (!user.getId().equals(confirmedOrder.getUser().getId())) {
             return "redirect:/";
         }
-//        mailService.sendOrderMail(confirmedOrder);
+        mailService.sendOrderMail(confirmedOrder);
         model.addAttribute("order", confirmedOrder);
         return "order-result";
     }

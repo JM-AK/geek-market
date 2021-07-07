@@ -24,7 +24,7 @@
 <div class="container">
     <br>
     <h1>Оформление заказа</h1>
-    <form th:action="@{orders/order/confirm}" th:object="${order}" method="post" class="form-horizontal">
+    <form th:action="@{/orders/order/confirm}" th:object="${order}" method="post" class="form-horizontal">
         <table class="table table-hover">
             <thead class="thead-dark">
             <tr>
@@ -68,7 +68,7 @@
             <br>
             <br>
             <div class="col-sm-6 controls">
-                <!--<a class="btn btn-primary" th:href="@{'/shop/order/result/' + ${order.id}}">Оплатить</a>-->
+                <a class="btn btn-primary" th:href="@{/orders/order/result/{id}(id=${order.id})}">Подтвердить</a>
               <!--
                 <a class="btn btn-primary" th:href="@{'/paypal/buy'}">Оплатить</a>
               -->

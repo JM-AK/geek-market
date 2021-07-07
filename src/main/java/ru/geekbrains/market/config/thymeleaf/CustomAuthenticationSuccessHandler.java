@@ -1,4 +1,4 @@
-package ru.geekbrains.market.config;
+package ru.geekbrains.market.config.thymeleaf;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;

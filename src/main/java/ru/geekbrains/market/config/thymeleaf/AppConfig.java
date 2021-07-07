@@ -1,4 +1,4 @@
-package ru.geekbrains.market.config;
+package ru.geekbrains.market.config.thymeleaf;
 
 import org.springframework.context.annotation.*;
 import org.springframework.web.servlet.LocaleResolver;
