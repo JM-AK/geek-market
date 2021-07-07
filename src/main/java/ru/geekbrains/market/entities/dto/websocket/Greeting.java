@@ -1,4 +1,4 @@
-package ru.geekbrains.market.entities.websocket;
+package ru.geekbrains.market.entities.dto.websocket;
 
 public class Greeting {
 

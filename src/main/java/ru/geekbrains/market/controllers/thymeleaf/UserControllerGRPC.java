@@ -1,18 +1,17 @@
-package ru.geekbrains.market.controllers;
+package ru.geekbrains.market.controllers.thymeleaf;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import ru.geekbrains.market.entities.Role;
 import ru.geekbrains.market.services.UserService;
 import ru.geekbrains.market.utils.grpc.RoleServiceClientGRPC;
-import ru.geekbrains.market.utils.grpc.RoleServiceImplGRPC;
 import ru.geekbrains.market.utils.grpc.RoleServiceServerGRPC;
 
 import java.io.IOException;
@@ -20,6 +19,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/users")
+@Profile("thymeleaf")
 public class UserControllerGRPC {
 
     private static final Logger logger = LoggerFactory.getLogger(UserControllerGRPC.class);

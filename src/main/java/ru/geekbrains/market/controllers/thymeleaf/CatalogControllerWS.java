@@ -1,18 +1,20 @@
-package ru.geekbrains.market.controllers;
+package ru.geekbrains.market.controllers.thymeleaf;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.util.HtmlUtils;
-import ru.geekbrains.market.entities.websocket.Greeting;
-import ru.geekbrains.market.entities.websocket.Message;
+import ru.geekbrains.market.entities.dto.websocket.Greeting;
+import ru.geekbrains.market.entities.dto.websocket.Message;
 import ru.geekbrains.market.utils.GreetingsWS;
 
 @Controller
+@Profile("thymeleaf")
 public class CatalogControllerWS implements GreetingsWS {
     private static final Logger logger = LoggerFactory.getLogger(CatalogControllerWS.class);
 

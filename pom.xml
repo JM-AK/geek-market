@@ -66,6 +66,14 @@
             <optional>true</optional>
         </dependency>
 
+        <!--<dependency swagger>-->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+
+
         <!--<dependency database>-->
         <dependency>
             <groupId>com.h2database</groupId>
@@ -150,6 +158,20 @@
             <groupId>org.webjars</groupId>
             <artifactId>jquery</artifactId>
             <version>3.5.1</version>
+        </dependency>
+
+        <!--<dependency aop>-->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.9.6</version>
+        </dependency>
+
+        <!--<dependency jwt>-->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.1</version>
         </dependency>
 
         <!--<dependency test>-->

@@ -1,8 +1,10 @@
 package ru.geekbrains.market.config;
 
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -15,7 +17,9 @@ import ru.geekbrains.market.services.UserService;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+@Profile("thymeleaf")
+@NoArgsConstructor
+public class ThymeleafSecurityConfig extends WebSecurityConfigurerAdapter {
     private UserService userService;
     private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
 
@@ -40,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/register/**").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/products/**").hasRole("ADMIN")
-                .antMatchers("/shop/order/**").authenticated()
+                .antMatchers("/orders/**").authenticated()
                 .antMatchers("/profile/**").authenticated()
                 .and()
                 .formLogin()
@@ -66,4 +70,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.setPasswordEncoder(passwordEncoder());
         return auth;
     }
+
 }

@@ -3,8 +3,8 @@ package ru.geekbrains.market.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CreationTimestamp;
+import ru.geekbrains.market.beans.Cart;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -61,5 +61,18 @@ public class Order {
     @JsonIgnore
     @Transient
     private boolean confirmed;
+
+    public Order(User user, Cart cart, String phoneNumber, DeliveryAddress deliveryAddress) {
+        this.user = user;
+        this.phoneNumber = phoneNumber;
+        this.deliveryAddress = deliveryAddress;
+        this.orderItems = new ArrayList<>();
+        for (OrderItem oi : cart.getItems()) {
+            oi.setOrder(this);
+            this.orderItems.add(oi);
+        }
+        this.price = cart.getTotalPrice();
+        cart.clear();
+    }
 
 }
