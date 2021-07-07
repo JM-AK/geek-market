@@ -60,9 +60,10 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public boolean save(SystemUser systemUser) {
         User user = new User();
-        if (findByUserName(systemUser.getUserName()) != null) {
-            return false;
-        }
+        findByUserName(systemUser.getUserName()).ifPresent((u) -> {
+            throw new RuntimeException("User with phone " + systemUser.getUserName() + " is already exist");
+        }) ;
+
         user.setUserName(systemUser.getUserName());
         user.setPassword(passwordEncoder.encode(systemUser.getPassword()));
         user.setFirstName(systemUser.getFirstName());

@@ -12,6 +12,7 @@ import ru.geekbrains.market.services.DeliveryAddressService;
 import ru.geekbrains.market.services.OrderService;
 import ru.geekbrains.market.services.UserService;
 import ru.geekbrains.market.beans.Cart;
+import ru.geekbrains.market.utils.rabbitmq.CartReceiverRabbit;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
@@ -25,6 +26,7 @@ public class OrderController {
     private OrderService orderService;
     private DeliveryAddressService deliverAddressService;
     private UserService userService;
+    private CartReceiverRabbit cartReceiverRabbit;
 
     @Autowired
     public void setUserService(UserService userService) {
@@ -41,6 +43,11 @@ public class OrderController {
         this.deliverAddressService = deliverAddressService;
     }
 
+    @Autowired
+    public void setCartReceiverRabbit(CartReceiverRabbit cartReceiverRabbit) {
+        this.cartReceiverRabbit = cartReceiverRabbit;
+    }
+
     @GetMapping
     public String firstRequest(Model model) {
         model.addAttribute("order", orderService.findAll());
@@ -52,9 +59,15 @@ public class OrderController {
         if (principal == null) {
             return "redirect:/login";
         }
+        try {
+            cartReceiverRabbit.receiveProduct();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         User user = userService.findByUserName(principal.getName()).get();
         Cart cart = (Cart) httpServletRequest.getSession().getAttribute("cart");
         Order order = orderService.makeOrder(cart, user);
+
         List<DeliveryAddress> deliveryAddresses = deliverAddressService.getUserAddresses(user.getId());
         model.addAttribute("order", order);
         model.addAttribute("deliveryAddresses", deliveryAddresses);

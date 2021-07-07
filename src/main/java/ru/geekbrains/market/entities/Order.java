@@ -62,17 +62,17 @@ public class Order {
     @Transient
     private boolean confirmed;
 
-    public Order(User user, Cart cart, String phoneNumber, DeliveryAddress deliveryAddress) {
-        this.user = user;
-        this.phoneNumber = phoneNumber;
-        this.deliveryAddress = deliveryAddress;
-        this.orderItems = new ArrayList<>();
-        for (OrderItem oi : cart.getItems()) {
-            oi.setOrder(this);
-            this.orderItems.add(oi);
-        }
-        this.price = cart.getTotalPrice();
-        cart.clear();
-    }
+//    public Order(User user, Cart cart, String phoneNumber, DeliveryAddress deliveryAddress) {
+//        this.user = user;
+//        this.phoneNumber = phoneNumber;
+//        this.deliveryAddress = deliveryAddress;
+//        this.orderItems = new ArrayList<>();
+//        for (OrderItem oi : cart.getItems()) {
+//            oi.setOrder(this);
+//            this.orderItems.add(oi);
+//        }
+//        this.price = cart.getTotalPrice();
+//        cart.clear();
+//    }
 
 }
